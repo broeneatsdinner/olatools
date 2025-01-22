@@ -64,6 +64,11 @@ You'll get an IP address that appears by your next prompt, in the format of xxx.
 You're done with the fake fake emulators. Load up your iterm2 or tabby terminal. Let me know if I need to add more instruction to this part. But, once there, type the following:  
 `ssh sysadmin@(the ip address that you wrote down or copied to clipboard)`  
 
+Using the deets from the above screenshot/example, you would enter:  
+`ssh sysadmin@13.239.38.155`
+
+Password is the same we've always used.
+
 From there, you'll hopefully see something like the following:  
 ```
 Attempting to SSH into 3.107.214.197 with username 'sysadmin'...
