@@ -57,6 +57,8 @@ You get an emulated screen of a computer's desktop. In the bar on the bottom are
 A fake screen within a fake screen appears, and you should see a command prompt. Blinking block cursor awaiting your command. A new feeling of power. Enter this command:  
 `curl ifconfig.me`
 
+![command-entered](https://github.com/user-attachments/assets/19801180-e264-4ba8-bb71-e00cb441c869)
+
 You'll get an IP address that appears by your next prompt, in the format of xxx.xxx.xxx.xxx. Write this IP address down, or select and copy it to your clipboard.
 
 You're done with the fake fake emulators. Load up your iterm2 or tabby terminal. Let me know if I need to add more instruction to this part. But, once there, type the following:  
