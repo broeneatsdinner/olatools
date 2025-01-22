@@ -103,3 +103,4 @@ sysadmin@ip-10-0-1-237:~$
 From here, going forward, you're connected to the remote box using a terminal that's running natively on your computer. You don't have to fuss with a particular right-click in Chrome, becaause the emulator is no longer running in a web browser. Your system is talking to the DU system directly. You just leveled up.
 
 Next.
+# olatool
