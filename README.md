@@ -22,12 +22,12 @@ Head Down, Spirits Up, Let's Find a Way In
 MacOS: Iterm2 is the de-facto standard. It can be downloaded here:  
 [iTerm2: If you don't know, now you know](https://iterm2.com)  
 
-![quatro](https://github.com/user-attachments/assets/3b7a6500-2cf0-4352-a54c-47114bf8fd18)
+![quatro](https://github.com/user-attachments/assets/e4846692-5529-4ad4-986e-aaf4b22c2946)
 
 Windows: Tabby.sh is super slick and allows for loads of customisation:  
 [Tabby: A terminal for the modern age](https://tabby.sh)  
 
-<img width="1024" alt="image" src="https://github.com/user-attachments/assets/b7e438ae-106b-43ba-825c-3aaa6164a186" />
+<img width="1024" alt="405485425-b7e438ae-106b-43ba-825c-3aaa6164a186 23 55 08" src="https://github.com/user-attachments/assets/d9ee6420-b19e-45b1-ae8f-75ccdb35f02b" />
 
 Linux: You already know your built-ins. See above.
 
@@ -46,11 +46,11 @@ Another screen appears, asking if you really want to do what you inititally want
 
 The web complains, saying it has to go to work now and that your on-demand lab will be ready in X:XX amount of minutes. It's a bit slow to stand up, like you just asked momma to come off her lunch shift to give you a computer. She's had a hard morning, and here you are.
 
-![loading](https://github.com/user-attachments/assets/cfe0e069-0c03-4c18-a85e-6a8491012077)
+![loading](https://github.com/user-attachments/assets/52748ed2-6695-497c-aebe-fd17b89da1ca)
 
 Yup, we're still waiting. 1:07 minutes left. Tortillas are not ready. Your little sister.. wait! Here we are:
 
-![shaking](https://github.com/user-attachments/assets/bb088f64-56f0-4d7f-a89c-d728caeba6da)
+![shaking](https://github.com/user-attachments/assets/a6c495a9-1ade-4ec2-ae25-4d1be7c65487)
 
 You get an emulated screen of a computer's desktop. In the bar on the bottom are 6 icons. The second from the left is an icon to load the command prompt. <b>Click on it</b>.
 
