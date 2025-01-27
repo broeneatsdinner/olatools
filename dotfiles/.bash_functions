@@ -9,7 +9,7 @@
 # functions - display a summary of custom user functions
 # usage: functions
 functions() {
-	cat "${HOME}/.bash_functions" | grep -B 1 usage
+	cat "${HOME}/olatools/dotfiles/.bash_functions" | grep -B 1 usage
 }
 
 ################################################################################
