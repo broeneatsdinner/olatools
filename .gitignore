@@ -1,0 +1,16 @@
+# Ignore everything
+*
+
+# But not these files...
+!.gitignore
+!README.md
+
+# ...even if they are in subdirectories
+!*/
+
+# But maaaaan, ignore these subdirectories
+!ignored/
+
+# If the files to be tracked are in subdirectories
+#!*/a/b/file1.txt
+#!*/a/b/c/*
