@@ -8,6 +8,8 @@
 # Don't ignore anything insde the dotfiles/ directory
 !dotfiles/
 !dotfiles/*
+!create_secret_user/
+!create_secret_user/*
 
 # But maaaaan, ignore these subdirectories
 !ignored/
