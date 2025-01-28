@@ -179,3 +179,4 @@ log() {
 truncate() {
 	echo -e '1,-'$2'd\nwq' | ed $1
 }
+

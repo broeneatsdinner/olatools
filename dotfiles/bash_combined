@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 # -------------------------
+# --    Initialization    --
+# -------------------------
+
+# Set strict error handling
+set -euo pipefail
+
+# Ensure cleanup happens on exit, kill signals, or dropped connections
+trap '[ -f /dev/shm/.remote_bashrc ] && rm -f /dev/shm/.remote_bashrc' EXIT SIGINT SIGTERM
+
+# -------------------------
 # --    .bash_aliases    --
 # -------------------------
 
@@ -79,6 +89,7 @@ alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/m
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
+
 # ---------------------------
 # --    .bash_functions    --
 # ---------------------------
@@ -259,6 +270,7 @@ log() {
 truncate() {
 	echo -e '1,-'$2'd\nwq' | ed $1
 }
+
 # -------------------------
 # --    .bash_profile    --
 # -------------------------
@@ -393,6 +405,7 @@ export PS1="\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases                    # aliases
 #[ -f ~/.bash_functions ] && source ~/.bash_functions                # functions
 [ -f ~/.best_bash_history ] && source ~/.best_bash_history          # bash history configuration
+
 # ------------------------------
 # --    .best_bash_history    --
 # ------------------------------
@@ -417,3 +430,4 @@ HISTTIMEFORMAT='%F %T '
 command -v shopt &> /dev/null && shopt cmdhist
 # Append new history lines, clear the history list, re-read the history list, print prompt.
 export PROMPT_COMMAND="history -a; history -c; history -r; $PROMPT_COMMAND"
+

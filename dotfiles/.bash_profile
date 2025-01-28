@@ -133,3 +133,4 @@ export PS1="\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\
 [ -f ~/.bash_aliases ] && source ~/.bash_aliases                    # aliases
 #[ -f ~/.bash_functions ] && source ~/.bash_functions                # functions
 [ -f ~/.best_bash_history ] && source ~/.best_bash_history          # bash history configuration
+
