@@ -46,17 +46,10 @@ alias getsize='printf "%b" "The current size of your terminal ... behold ... Col
 
 # Shortcuts: Directories (listing)
 # A = include hidden (but not . or ..), F = put `/` after folders, h = human byte unit suffixes
-if [[ "$(uname -s)" == "Linux" ]]; then
-	alias ls='ls --color -hNF --group-directories-first' # For Ubuntu distros
-else
-	alias ls='gls --color -hNF --group-directories-first' # Requires `gls` command (coreutils), homebrew
-fi
+alias ls='ls -lh --color=auto'
 alias ll='ls -l'
 alias la='ls -lA'
 alias l='ls -CA'
-
-# DNS
-alias {showdns,dnsinfo}='scutil --dns | grep nameserver' # Show the currently-used DNS entries
 
 # Shortcuts: Directories (navigation)
 alias q='exit'
@@ -86,26 +79,3 @@ alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/m
 
 # Print each PATH entry on a separate line
 alias path='echo -e ${PATH//:/\\n}'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

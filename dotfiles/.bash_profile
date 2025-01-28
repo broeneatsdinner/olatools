@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# -------------------------------
-# --    .bash_profile_macos    --
-# -------------------------------
+# -------------------------
+# --    .bash_profile    --
+# -------------------------
 
 # Use nano as the default editor (crontab -e and such)
 export EDITOR=/usr/bin/nano
