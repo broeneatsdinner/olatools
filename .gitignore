@@ -10,6 +10,8 @@
 !dotfiles/*
 !create_secret_user/
 !create_secret_user/*
+!get_system_info/
+!get_system_info/*
 
 # But maaaaan, ignore these subdirectories
 !ignored/
