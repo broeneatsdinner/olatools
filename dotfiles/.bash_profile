@@ -126,11 +126,3 @@ symbol="\[${GRAY1}\]> "
 # ${GRAY5}${USER:4}"
 # export PS1="\[${GREEN1}\]${userelite} \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\] $symbol\[$RESET\]"
 export PS1="\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\]$symbol\[$RESET\]"
-
-#
-# Aliases and Functions from external files.
-#
-[ -f ~/.bash_aliases ] && source ~/.bash_aliases                    # aliases
-#[ -f ~/.bash_functions ] && source ~/.bash_functions                # functions
-[ -f ~/.best_bash_history ] && source ~/.best_bash_history          # bash history configuration
-
