@@ -3,6 +3,9 @@
 # --    .bash_profile    --
 # -------------------------
 
+# Set the public IP at the start of the session
+export PUBLIC_IP=$(curl -4 ifconfig.me 2>/dev/null)
+
 # Use nano as the default editor (crontab -e and such)
 export EDITOR=/usr/bin/nano
 
@@ -125,4 +128,5 @@ symbol="\[${GRAY1}\]> "
 # ${GRAY4}${USER:3:1}\
 # ${GRAY5}${USER:4}"
 # export PS1="\[${GREEN1}\]${userelite} \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\] $symbol\[$RESET\]"
-export PS1="\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\]$symbol\[$RESET\]"
+# export PS1="\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\]$symbol\[$RESET\]"
+export PS1="\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]$PUBLIC_IP\[$RESET\]$symbol\[$RESET\]"
