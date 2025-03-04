@@ -85,7 +85,7 @@ echo ""
 echo "Transferring bashrc file..."
 sshpass -p "$PASSWORD" ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
 	-o LogLevel=ERROR -o ServerAliveInterval=60 -o ServerAliveCountMax=3 \
-	"$USERNAME@$IP_ADDRESS" "echo '$B64_PAYLOAD' | base64 -d > '$REMOTE_BASHRC'"
+	"$USERNAME@$IP_ADDRESS" "echo '$B64_PAYLOAD' | { base64 --decode || base64 -d; } > '$REMOTE_BASHRC'"
 
 # Second SSH connection: Start an interactive shell with cleanup mechanism
 echo "Starting interactive session..."
