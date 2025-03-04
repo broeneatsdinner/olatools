@@ -58,7 +58,7 @@ for cmd in sshpass base64 ssh; do
 done
 
 # Ensure the local bashrc file exists, fallback to ~/.bashrc if missing
-if [[ -v CYBER_BASHRC && -n "$CYBER_BASHRC" && ! -f "$CYBER_BASHRC" ]]; then
+if [[ -n "${CYBER_BASHRC+x}" && -n "$CYBER_BASHRC" && ! -f "$CYBER_BASHRC" ]]; then
 	echo "Error: Custom CYBER_BASHRC file '$CYBER_BASHRC' does not exist. Exiting." >&2
 	exit 1
 fi
@@ -90,24 +90,24 @@ sshpass -p "$PASSWORD" ssh -T -o StrictHostKeyChecking=no -o UserKnownHostsFile=
 # Second SSH connection: Start an interactive shell with cleanup mechanism
 echo "Starting interactive session..."
 sshpass -p "$PASSWORD" ssh -t -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-	-o ServerAliveInterval=60 -o ServerAliveCountMax=3 \
-	"$USERNAME@$IP_ADDRESS" '
+	-o LogLevel=ERROR -o ServerAliveInterval=60 -o ServerAliveCountMax=3 \
+	"$USERNAME@$IP_ADDRESS" "
 		# Automatically remove the remote bashrc file upon session termination
 		# This ensures no trace is left on the remote system.
 		#
-		# The trap executes `rm -f "$REMOTE_BASHRC"` when the session ends due to:
-		#   - Normal logout (`exit`, `logout`)
+		# The trap executes rm -f \"$REMOTE_BASHRC\" when the session ends due to:
+		#   - Normal logout (exit, logout)
 		#   - SSH session timeout or network disconnection
-		#   - Standard termination signals (`SIGHUP`, `SIGINT`, `SIGTERM`)
-		#   - Admin termination with `kill <PID>` or `pkill ssh`
+		#   - Standard termination signals (SIGHUP, SIGINT, SIGTERM)
+		#   - Admin termination with kill <PID> or pkill ssh
 		#
 		# However, the trap will NOT execute if:
-		#   - The process is force-killed (`kill -9 <PID>`, `SIGKILL`)
+		#   - The process is force-killed (kill -9 <PID>, SIGKILL)
 		#   - The system crashes unexpectedly (power failure, kernel panic)
 		#
 		# The file is also automatically removed upon reboot since it is stored in /dev/shm (tmpfs).
-		trap "rm -f \"$REMOTE_BASHRC\"" EXIT SIGHUP SIGINT SIGTERM
+		trap 'rm -f \"$REMOTE_BASHRC\"' EXIT SIGHUP SIGINT SIGTERM
 
 		# Start an interactive login shell with the remote bashrc preloaded
-		exec bash --rcfile "$REMOTE_BASHRC"
-	'
+		exec bash --rcfile \"$REMOTE_BASHRC\"
+	"

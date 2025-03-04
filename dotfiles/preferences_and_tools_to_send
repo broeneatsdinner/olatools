@@ -72,7 +72,6 @@ alias g='cd ~/'
 
 # Shortcuts: Commands (laziness
 alias k9='kill -9'
-alias date='gdate ' # gdate --version Should be (GNU coreutils) 9.1 or greater
 [[ "$(uname -s)" == "Linux" ]] && alias subl='rsub' # Install rsub using apt to locally open files with Sublime Text
 
 # Last time file opened/accessed
