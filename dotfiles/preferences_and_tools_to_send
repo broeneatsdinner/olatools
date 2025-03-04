@@ -119,6 +119,21 @@ functions() {
 #
 ################################################################################
 
+# mkcd - create a directory and immediately change into it
+# usage: mkcd <directory>, can also mkcd <directory1> <directory2> <directory3>
+function mkcd() {
+	if [ -z "$1" ]; then
+		echo "Help: mkcd creates a directory if it doesn't exist, then changes into it."
+		echo "Usage: mkcd <path>"
+		return 0
+	fi
+
+	# If using mkcd dir1 dir2 dir3, the following will change into the last dir created:
+	mkdir -p -- "$@" && [[ -d "$_" ]] && cd -P -- "$_"
+	# If using mkcd dir1 dir2 dir3, the following will change into the first dir created:
+	# mkdir -p -- "$@" && cd -P -- "$1" || exit;
+}
+
 # lcd - change to specified directory and immediately list its contents
 # usage: lcd <directory>
 lcd() {
@@ -262,6 +277,87 @@ myip() {
 	# @see https://superuser.com/questions/998854/how-to-redirect-stderr-to-both-file-and-console-and-stdout-to-file-only
 	# command 2>&1 1>logfile | tee -a logfile
 
+}
+
+# myos - get the current OS information, from multiple sources
+# usage: myos
+myos() {
+	echo "Command: cat /etc/os-release"
+	echo "----------------------------"
+	echo ""
+	if [ -f /etc/os-release ]; then
+		awk -F= '
+		{
+			key_length = length($1)
+			if (key_length > max_length) {
+				max_length = key_length
+			}
+		}
+		END {
+			max_length += 1  # Add padding for better readability
+			while ((getline < "/etc/os-release") > 0) {
+				split($0, parts, "=")
+				gsub("\"", "", parts[2])  # Remove double quotes
+				printf "%-*s %s\n", max_length, parts[1] ":", parts[2]
+			}
+		}' /etc/os-release
+	else
+		echo "/etc/os-release not available (are you on MacOS, not Linux)"
+	fi
+	echo ""
+	echo "Command: lsb_release -a"
+	echo "-----------------------"
+	echo ""
+	lsb_release -a 2>/dev/null || echo "lsb_release command not available (are you on MacOS, not Linux)"
+	echo ""
+	echo "Command: uname -r"
+	echo "-----------------"
+	echo ""
+	uname -r
+	echo ""
+}
+
+# create - create a new bash script, make it executable for the user, start editing it
+# usage: create <script_name>
+create() {
+	# Check if a filename is provided
+	if [[ -z "$1" ]]; then
+		echo "Error: No filename provided."
+		echo "Usage: create <script_name>"
+		return 1
+	fi
+
+	# Ensure the filename has a .sh extension
+	if [[ "$1" != *.sh ]]; then
+		script_name="$1.sh"
+	else
+		script_name="$1"
+	fi
+
+	# Check if the file already exists
+	if [[ -e "$script_name" ]]; then
+		echo "Error: File '$script_name' already exists."
+		return 1
+	fi
+
+	# Create the file with a shebang, set permissions
+	if echo "#!/usr/bin/env bash" > "$script_name" && chmod u+x "$script_name"; then
+		full_path="$(realpath "$script_name")"
+		echo "Created: $script_name"
+		echo "Full path to script: $full_path"
+
+		# Open the file in Sublime Text if available, otherwise use nano
+		if command -v subl >/dev/null 2>&1; then
+			subl "$script_name"
+		elif command -v nano >/dev/null 2>&1; then
+			nano "$script_name"
+		else
+			echo "Warning: No suitable text editor found. Open '$script_name' manually."
+		fi
+	else
+		echo "Error: Failed to create '$script_name'."
+		return 1
+	fi
 }
 
 # -------------------------
@@ -412,6 +508,8 @@ if [[ ! "$PROMPT_COMMAND" =~ "history -a" ]]; then
 	export PROMPT_COMMAND="history -a; ${PROMPT_COMMAND:-}"
 fi
 
-export PATH=$HOME/.local/bin:$PATH
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+	export PATH="$HOME/.local/bin:$PATH"
+fi
 # source $HOME/source_this_file_it_is_for_bash_combined_aliases_and_functions_and_prompt
 echo "boom chicken."
