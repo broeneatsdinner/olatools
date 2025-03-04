@@ -107,7 +107,10 @@ functions() {
 		FUNC_FILE="$REMOTE_BASHRC"
 	fi
 
-	cat "$FUNC_FILE" | grep -B 1 usage
+	# Useless cat (also known as a Useless Use of cat (UUOC)).
+	# cat "$FUNC_FILE" | grep -B 1 usage
+	# Better:
+	grep -B 1 usage "$FUNC_FILE"
 }
 
 ################################################################################
@@ -128,10 +131,10 @@ bak() {
 	cp $1{,.broen}
 }
 
-# wfs - watch a file's size, update every n seconds
+# wfs - watch a file's size, update every 2 seconds
 # usage: wfs <filename>
 wfs() {
-	watch -n 5 "ls -lh \"$1\" | awk '{print \$5}'"s
+	watch -n 2 "ls -lh \"$1\" | awk '{print \$5}'"s
 }
 
 ################################################################################
@@ -261,23 +264,6 @@ myip() {
 
 }
 
-# @see https://www.outsideopen.com/the-colorful-magic-of-ccze/
-# To read about the magic of ccze colorization
-# log - view live and color logs
-# usage: log <logname>
-log() {
-	sudo tail -f -n 50 $1 | ccze
-}
-
-# one-liner to delete all BUT n lines of text file (good for removing first billion lines of a log file)
-# note that -10 is the number of lines to preserve (10), and myfile.txt is the name of the file to truncate.
-# echo -e '1,-10d\nwq' | ed myfile.txt
-# truncate - one-liner to delete all BUT n lines of a text file
-# usage: truncate myfile.txt 10
-truncate() {
-	echo -e '1,-'$2'd\nwq' | ed $1
-}
-
 # -------------------------
 # --    .bash_profile    --
 # -------------------------
@@ -389,22 +375,7 @@ color_mixer='\033[38;5;'"$color_number"m""
 GREEN4="$color_mixer"
 
 # Change this symbol to something sweet.
-# (http://en.wikipedia.org/wiki/Unicode_symbols)
-# symbol="⚡ "
-# symbol="\[${GRAY1}\]⟹   "
-# symbol="\[${BWHITE}\]⋟ "
 symbol="\[${GRAY1}\]> "
-
-#export PS1="\[${MAGENTA}\]\u \[$RESET\]in \[$GREEN\]\w\[$RESET\]\$([[ -n \$(git branch 2> /dev/null) ]] && echo \" on \")\[$PURPLE\]\$(parse_git_branch)\[$RESET\]\n$symbol\[$RESET\]"
-#export PS2="\[$ORANGE\]→ \[$RESET\]"
-##########export PS1="\[${MAGENTA}\]\u \[$RESET\]in \[$GREEN\]\w\[$RESET\] on \[$PURPLE\]\h\[$RESET\] $symbol\[$RESET\]"
-# userelite="${GRAY1}${USER:0:1}\
-# ${GRAY2}${USER:1:1}\
-# ${GRAY3}${USER:2:1}\
-# ${GRAY4}${USER:3:1}\
-# ${GRAY5}${USER:4}"
-# export PS1="\[${GREEN1}\]${userelite} \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\] $symbol\[$RESET\]"
-# export PS1="\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\]$symbol\[$RESET\]"
 
 # Reapply the custom PS1 after system scripts reset it
 export PS1="\n\[${GREEN4}\]$(pwd)\[$RESET\]\n\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\]$symbol\[$RESET\] "
