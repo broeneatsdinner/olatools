@@ -100,7 +100,14 @@ alias path='echo -e ${PATH//:/\\n}'
 # functions - display a summary of custom user functions
 # usage: functions
 functions() {
-	cat "${HOME}/olatools/dotfiles/.bash_functions" | grep -B 1 usage
+	local FUNC_FILE="${HOME}/.bash_functions"
+
+	# If running on a remote system (where $REMOTE_BASHRC is sourced), use it instead
+	if [[ -f "$REMOTE_BASHRC" ]]; then
+		FUNC_FILE="$REMOTE_BASHRC"
+	fi
+
+	cat "$FUNC_FILE" | grep -B 1 usage
 }
 
 ################################################################################
