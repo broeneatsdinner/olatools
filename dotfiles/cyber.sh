@@ -13,7 +13,7 @@ if [[ $# -ne 1 ]]; then
 fi
 
 # Locate and source the passwords file, contained in the same directory as this script
-PASSWORD_FILE="$(dirname "$0")/passwords"
+PASSWORD_FILE="$(dirname "$(realpath "$0")")/passwords"
 if [[ -f "$PASSWORD_FILE" ]]; then
 	source "$PASSWORD_FILE"
 else
