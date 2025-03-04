@@ -55,7 +55,7 @@ Yup, we're still waiting. 1:07 minutes left. Tortillas are not ready. Your littl
 You get an emulated screen of a computer's desktop. In the bar on the bottom are 6 icons. The second from the left is an icon to load the command prompt. <b>Click on it</b>.
 
 A fake screen within a fake screen appears, and you should see a command prompt. Blinking block cursor awaiting your command. A new feeling of power. Enter this command:  
-`curl ifconfig.me`
+`curl -4 ifconfig.me; echo`
 
 ![command-entered](https://github.com/user-attachments/assets/19801180-e264-4ba8-bb71-e00cb441c869)
 
