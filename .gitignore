@@ -1,6 +1,10 @@
 # Ignore everything
 *
 
+# Ignore macOS system files
+.DS_Store
+**/.DS_Store
+
 # But not these files...
 !.gitignore
 !README.md
@@ -15,3 +19,7 @@
 
 # But maaaaan, ignore these subdirectories
 !ignored/
+
+# Don't ignore the Module 9 Day 2
+!Module 9 Day 2/
+!Module 9 Day 2/*
