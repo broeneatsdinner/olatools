@@ -1,13 +1,6 @@
 # Ignore everything
 *
 
-# Ignore macOS system files
-.DS_Store
-**/.DS_Store
-
-# Ignore any file that contains the string 'password' (note: wildcard)
-*password*
-
 # But not these files...
 !.gitignore
 !README.md
@@ -15,14 +8,27 @@
 # Don't ignore anything insde the dotfiles/ directory
 !dotfiles/
 !dotfiles/*
+
+# Don't ignore the create_secret_user/ directory
 !create_secret_user/
 !create_secret_user/*
+
+# Don't ignore the get_system_info/ directory
 !get_system_info/
 !get_system_info/*
-
-# But maaaaan, ignore these subdirectories
-!ignored/
 
 # Don't ignore the Module 9 Day 2
 !Module 9 Day 2/
 !Module 9 Day 2/*
+
+# But maaaaan, ignore these subdirectories and any files or subdirectories
+# contained within them
+ignored/
+**/ignored/
+
+# Ignore macOS system files
+.DS_Store
+**/.DS_Store
+
+# Ignore any file that contains the string 'password' (placed last to override includes)
+*password*
