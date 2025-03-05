@@ -30,6 +30,13 @@ alias sdoo='sudo '
 alias sudu='sudo '
 alias sduo='sudo '
 
+# Finding an alternative to ping, since ICMP is blocked upstream by AWS EC2 or school firewall
+if command -v hping3 &> /dev/null; then
+	alias ping='sudo hping3 -S -p 443 -c 4'
+else
+	echo "Warning: hping3 is not installed. Install it with: sudo apt update && sudo apt install hping3 -y"
+fi
+
 # Reloading / Refreshing the .bash_aliases and .bash_functions
 alias reload='source ~/dotfiles/.bash_aliases && source ~/dotfiles/.bash_functions && printf "%b" "\e[1;34m.bash_aliases\e[0m and \e[1;34m.bash_functions\e[0m have been reloaded.\n"'
 
@@ -510,5 +517,32 @@ fi
 if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
 	export PATH="$HOME/.local/bin:$PATH"
 fi
-# source $HOME/source_this_file_it_is_for_bash_combined_aliases_and_functions_and_prompt
+
+# -----------------------------------
+# --    .some_fun_things_to_try    --
+# -----------------------------------
+echo
+echo "Some fun things to try"
+echo "> date"
+echo "> timedatectl list-timezones"
+echo "> sudo timedatectl set-timezone America/Denver"
+echo "> date"
+echo
+echo "> systemd-resolve --status | grep 'DNS Servers' -A2"
+echo
+echo "If result is:"
+echo "DNS Servers: 8.8.8.8
+DNS Domain: eu-west-2.compute.internal
+--
+DNS Servers: 10.0.0.2
+DNS Domain: eu-west-2.compute.internal"
+echo
+echo "Fix: Force AWS VPC DNS (10.0.0.2) as Primary"
+echo "> echo \"nameserver 10.0.0.2\" | sudo tee /etc/resolv.conf"
+echo "> echo -e \"[Resolve]\nDNS=10.0.0.2\nFallbackDNS=8.8.8.8\" | sudo tee /etc/systemd/resolved.conf.d/aws-dns.conf"
+echo "> sudo systemctl restart systemd-resolved"
+echo "> cat /etc/systemd/resolved.conf.d/aws-dns.conf"
+echo
+echo "29d : 14h : 56m : 43s"
+echo
 echo "boom chicken."
