@@ -12,8 +12,11 @@ if [[ $# -ne 1 ]]; then
 	exit 1
 fi
 
+# Get the full path to the directory of this script
+FULLPATH=$(dirname "$(realpath "$0")")/
+
 # Locate and source the passwords file, contained in the same directory as this script
-PASSWORD_FILE="$(dirname "$(realpath "$0")")/passwords"
+PASSWORD_FILE="${FULLPATH}passwords"
 if [[ -f "$PASSWORD_FILE" ]]; then
 	source "$PASSWORD_FILE"
 else
@@ -23,15 +26,21 @@ fi
 
 # Ensure required variables are set (username & password)
 if [[ -z "${CYBER_USER:-}" || -z "${CYBER_PASS:-}" ]]; then
-	echo "Error: CYBER_USER or CYBER_PASS is not set. Check $PASSWORD_FILE." >&2
-	exit 1
+    printf "Error: CYBER_USER or CYBER_PASS is not set.\nCheck the %s file and define these variables.\n" "$PASSWORD_FILE" >&2
+    exit 1
+fi
+
+# Ensure our bashrc payload is set (converted to .remote_bashrc on the target server)
+if [[ -z "${CYBER_BASHRC:-}" ]]; then
+    printf "Error: CYBER_BASHRC is not set or empty.\nDefine it in %s before running the script.\n" "$PASSWORD_FILE" >&2
+    exit 1
 fi
 
 # Variables
 IP_ADDRESS="$1"
 USERNAME="$CYBER_USER"
 PASSWORD="$CYBER_PASS"
-LOCAL_BASHRC="${CYBER_BASHRC:-$HOME/.bashrc}"
+LOCAL_BASHRC="${FULLPATH}${CYBER_BASHRC}"
 REMOTE_BASHRC="/dev/shm/.remote_bashrc"
 
 # Validate that the input is a properly formatted IP address
