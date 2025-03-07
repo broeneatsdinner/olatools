@@ -40,16 +40,16 @@ MTcwOTA4NTc4MA==      # Base64 Encoded Epoch, for app inclusion
 
 | Completed Activity                      | Script(s) used / Tasks completed / Screenshots |
 |------------------------------------------|-----------------------------------------------|
-| **OS backup**                            | `tar -cvpzf /root/baker_street_backup_$(date +%F).tar.gz --exclude=/root/baker_street_backup* --exclude=/proc --exclude=/tmp --exclude=/mnt --exclude=/sys --exclude=/dev --exclude=/run /` |
-| Auditing users and groups                |                                               |
-| Updating and enforcing password policies |                                               |
-| Updating and enforcing sudo permissions  |                                               |
-| Validating and updating permissions on files and directories |                              |
+| **OS backup**                            | `tar -cvpzf /root/baker_street_backup_$(date +%F).tar.gz --exclude=/root/baker_street_backup* --exclude=/proc --exclude=/tmp --exclude=/mnt --exclude=/sys --exclude=/dev --exclude=/run /` <br> [See below](#backup-the-os) |
+| Auditing users and groups                | [See below](#day-1-part-2-auditing-users-and-groups) |
+| Updating and enforcing password policies | [See below](#day-1-part-3-updating-and-enforcing-password-policies) |
+| Updating and enforcing sudo permissions  | [See below](#day-1-part-4-updating-and-enforcing-sudo-permissions) |
+| Validating and updating permissions on files and directories | [See below](#day-1-part-5-validating-and-updating-permissions-on-files-and-directories) |
 | Optional: Updating password hashing configuration |                                               |
-| Auditing and securing SSH                |                                               |
-| Reviewing and updating system packages   |                                               |
+| Auditing and securing SSH                | [See below](#day-2-part-1-auditing-and-securing-ssh) |
+| Reviewing and updating system packages   | [See below for Disabling Unnecessary Services](#day-2-part-2-review-update-and-add-system-packages) |
 | **Disabling unnecessary services**       | [See below for Disabling Unnecessary Services](#day-2-part-3-disabling-unnecessary-services) |
-| **Enabling and configuring logging**     | [See below for Enabling and Configuring Logging](#enabling-and-configuring-logging) |
+| **Enabling and configuring logging**     | [See below for Enabling and Configuring Logging](#day-2-part-4-enabling-and-configuring-logging) |
 | **Scripts created**                      | `keepalive.sh  # Run on VM to keep SSH alive`<br>`container_start.sh  # To start the docker`<br>`container_connect.sh  # To connect to the docker`<br>`hardening_script_1.sh  # Day 3 hardening script`<br>`hardening_script_3.sh  # Day 3 hardening script`<br>`source_bash_profile_broen  # A dotfile-type script to set up my environment the way I like, including $PS1 prompt and history` |
 | **Scripts scheduled with cron**          | [See below for "Scripts Scheduled with Cron"](#scripts-scheduled-with-cron) |
 
