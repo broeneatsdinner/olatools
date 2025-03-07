@@ -43,11 +43,11 @@ MTcwOTA4NTc4MA==      # Base64 Encoded Epoch, for app inclusion
 | **OS backup**                            | `tar -cvpzf /root/baker_street_backup_$(date +%F).tar.gz --exclude=/root/baker_street_backup* --exclude=/proc --exclude=/tmp --exclude=/mnt --exclude=/sys --exclude=/dev --exclude=/run /` <br><br> [See below for OS Backup](#backup-the-os) |
 | Auditing users and groups                | [See below for Auditing users and groups](#day-1-part-2-auditing-users-and-groups) |
 | Updating and enforcing password policies | [See below for Updating and enforcing password policies](#day-1-part-3-updating-and-enforcing-password-policies) |
-| Updating and enforcing sudo permissions  | [See below](#day-1-part-4-updating-and-enforcing-sudo-permissions) |
-| Validating and updating permissions on files and directories | [See below](#day-1-part-5-validating-and-updating-permissions-on-files-and-directories) |
+| Updating and enforcing sudo permissions  | [See below for Updating and Enforcing sudo Permissions](#day-1-part-4-updating-and-enforcing-sudo-permissions) |
+| Validating and updating permissions on files and directories | [See below for Validating and Updating Permissions on Files and Directories](#day-1-part-5-validating-and-updating-permissions-on-files-and-directories) |
 | Optional: Updating password hashing configuration |                                               |
-| Auditing and securing SSH                | [See below](#day-2-part-1-auditing-and-securing-ssh) |
-| Reviewing and updating system packages   | [See below for Disabling Unnecessary Services](#day-2-part-2-review-update-and-add-system-packages) |
+| Auditing and securing SSH                | [See below for Auditing and Securing SSH](#day-2-part-1-auditing-and-securing-ssh) |
+| Reviewing and updating system packages   | [See below for Review, Update, and Add System Packages](#day-2-part-2--review-update-and-add-system-packages) |
 | **Disabling unnecessary services**       | [See below for Disabling Unnecessary Services](#day-2-part-3-disabling-unnecessary-services) |
 | **Enabling and configuring logging**     | [See below for Enabling and Configuring Logging](#day-2-part-4-enabling-and-configuring-logging) |
 | **Scripts created**                      | `keepalive.sh  # Run on VM to keep SSH alive`<br>`container_start.sh  # To start the docker`<br>`container_connect.sh  # To connect to the docker`<br>`hardening_script_1.sh  # Day 3 hardening script`<br>`hardening_script_3.sh  # Day 3 hardening script`<br>`source_bash_profile_broen  # A dotfile-type script to set up my environment the way I like, including $PS1 prompt and history` |
