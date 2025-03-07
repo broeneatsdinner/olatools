@@ -66,13 +66,6 @@ for cmd in sshpass base64 ssh; do
 	fi
 done
 
-# Ensure the local bashrc file exists, fallback to ~/.bashrc if missing
-if [[ -n "${CYBER_BASHRC+x}" && -n "$CYBER_BASHRC" && ! -f "$CYBER_BASHRC" ]]; then
-	echo "Error: Custom CYBER_BASHRC file '$CYBER_BASHRC' does not exist. Exiting." >&2
-	exit 1
-fi
-LOCAL_BASHRC="${CYBER_BASHRC:-$HOME/.bashrc}"
-
 if [[ ! -f "$LOCAL_BASHRC" ]]; then
 	echo "Error: No valid bashrc file found." >&2
 	exit 1
