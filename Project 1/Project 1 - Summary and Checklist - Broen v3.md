@@ -6,7 +6,7 @@
 
 # Project 1: System Hardening
 
-| **Report Version** | 1.0 |
+| **Report Version** | 3.0 |
 |:------------------ |:--- |
 | **Prepared By**   | Broen Westberg |
 | **Date**          | February 27, 2025 |
@@ -45,7 +45,7 @@ MTcwOTA4NTc4MA==      # Base64 Encoded Epoch, for app inclusion
 | Updating and enforcing password policies | [See below for Updating and enforcing password policies](#day-1-part-3-updating-and-enforcing-password-policies) |
 | Updating and enforcing sudo permissions  | [See below for Updating and Enforcing sudo Permissions](#day-1-part-4-updating-and-enforcing-sudo-permissions) |
 | Validating and updating permissions on files and directories | [See below for Validating and Updating Permissions on Files and Directories](#day-1-part-5-validating-and-updating-permissions-on-files-and-directories) |
-| Optional: Updating password hashing configuration |                                               |
+| Optional: Updating password hashing configuration | `Note:` I believe this is a legacy element from a previous Summary & Checklist. <br><br> That said, here's the deal: <br> `cat /etc/login.defs` shows that `ENCRYPT_METHOD` is already set to `SHA512` on this machine. <br><br> That's strong as heck and doesn't need changing, but if we really wanted to level up password security, switching to **yescrypt** (or even **bcrypt**) would make encryption even more elite. |
 | Auditing and securing SSH                | [See below for Auditing and Securing SSH](#day-2-part-1-auditing-and-securing-ssh) |
 | Reviewing and updating system packages   | [See below for Review, Update, and Add System Packages](#day-2-part-2--review-update-and-add-system-packages) |
 | **Disabling unnecessary services**       | [See below for Disabling Unnecessary Services](#day-2-part-3-disabling-unnecessary-services) |
