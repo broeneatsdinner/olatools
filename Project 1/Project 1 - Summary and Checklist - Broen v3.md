@@ -40,9 +40,9 @@ MTcwOTA4NTc4MA==      # Base64 Encoded Epoch, for app inclusion
 
 | Completed Activity                      | Script(s) used / Tasks completed / Screenshots |
 |------------------------------------------|-----------------------------------------------|
-| **OS backup**                            | `tar -cvpzf /root/baker_street_backup_$(date +%F).tar.gz --exclude=/root/baker_street_backup* --exclude=/proc --exclude=/tmp --exclude=/mnt --exclude=/sys --exclude=/dev --exclude=/run /` <br> [See below](#backup-the-os) |
-| Auditing users and groups                | [See below](#day-1-part-2-auditing-users-and-groups) |
-| Updating and enforcing password policies | [See below](#day-1-part-3-updating-and-enforcing-password-policies) |
+| **OS backup**                            | `tar -cvpzf /root/baker_street_backup_$(date +%F).tar.gz --exclude=/root/baker_street_backup* --exclude=/proc --exclude=/tmp --exclude=/mnt --exclude=/sys --exclude=/dev --exclude=/run /` <br><br> [See below for OS Backup](#backup-the-os) |
+| Auditing users and groups                | [See below for Auditing users and groups](#day-1-part-2-auditing-users-and-groups) |
+| Updating and enforcing password policies | [See below for Updating and enforcing password policies](#day-1-part-3-updating-and-enforcing-password-policies) |
 | Updating and enforcing sudo permissions  | [See below](#day-1-part-4-updating-and-enforcing-sudo-permissions) |
 | Validating and updating permissions on files and directories | [See below](#day-1-part-5-validating-and-updating-permissions-on-files-and-directories) |
 | Optional: Updating password hashing configuration |                                               |
