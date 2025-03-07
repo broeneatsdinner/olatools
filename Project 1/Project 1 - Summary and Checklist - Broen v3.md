@@ -48,7 +48,7 @@ MTcwOTA4NTc4MA==      # Base64 Encoded Epoch, for app inclusion
 | Optional: Updating password hashing configuration |                                               |
 | Auditing and securing SSH                |                                               |
 | Reviewing and updating system packages   |                                               |
-| **Disabling unnecessary services**       | [See below for Disabling Unnecessary Services](#disabling-unnecessary-services) |
+| **Disabling unnecessary services**       | [See below for Disabling Unnecessary Services](#day-2-part-3-disabling-unnecessary-services) |
 | **Enabling and configuring logging**     | [See below for Enabling and Configuring Logging](#enabling-and-configuring-logging) |
 | **Scripts created**                      | `keepalive.sh  # Run on VM to keep SSH alive`<br>`container_start.sh  # To start the docker`<br>`container_connect.sh  # To connect to the docker`<br>`hardening_script_1.sh  # Day 3 hardening script`<br>`hardening_script_3.sh  # Day 3 hardening script`<br>`source_bash_profile_broen  # A dotfile-type script to set up my environment the way I like, including $PS1 prompt and history` |
 | **Scripts scheduled with cron**          | [See below for "Scripts Scheduled with Cron"](#scripts-scheduled-with-cron) |
