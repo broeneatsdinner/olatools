@@ -1944,64 +1944,54 @@ It should show the following:
 
 ## Summary: Vulnerabilities & Hardening Recommendations
 
-Remember the scripts:
-keepalive.sh
-container_connect.sh
-container_start.sh
-source_this_file_it_is_for_bash_combined_aliases_and_functions_and_prompt (no suffix/file extension)
+### Security Considerations
 
+**SSH Access**
+  - Disable password authentication and enforce SSH key-based authentication.
 
+**Sudo Access Management**
+  - Avoid managing sudo privileges through individual sudoers entries.
+  - Instead, assign users to appropriate groups---this is the intended use of groups.
 
+**Shared Script Access**
+  - To securely share scripts among users (e.g., a research group), do not change ownership recursively (chown -R :research).
+  - Instead, create a shared directory with controlled access and logging to track file modifications and executions.
 
+**Cron Job Security Risks**
+  - Privilege Concern: The script runs as root, granting high privileges.
+  - Potential Exploits: If unsecured, it could be exploited for persistence (e.g., backdoor).
+  - Security Measures:
+    - Review the script's purpose, permissions, and modification access.
+    - Check system logs (/var/log/syslog, /var/log/cron.log) to verify execution.
+    - Ensure hardening_script_1.sh is legitimate and properly secured.
 
-Thoughts on security:
-Turn off password ssh and enforce keys
+**Kernel Vulnerabilities**
+  - Your current kernel 5.15.0-1077-aws has known vulnerabilities, affecting:
+    - Netfilter, network traffic control, VMware vSockets driver.
+    - GPU drivers, BTRFS, F2FS, GFS2, BPF subsystem, RxRPC session sockets, and IMA framework.
+    - Notable CVEs:
+      - CVE-2024-27012, CVE-2024-42228
 
-Don't maanage sudo access with sudoers file and sudoers group -- move them all to the group, that is what groups are for
+**Package Vulnerabilities**
+  - OpenVPN:
+    - CVE-2024-28882, CVE-2024-5594---could allow a remote authenticated client to maintain a connection or cause a denial of service.
 
-Use ChatGPT to find any vulnerabilities with packages installed or kernel
+**Recommendations**
+  1. Kernel & System Updates
+     - Update to the latest kernel available for Ubuntu 22.04.5 LTS.
+     - Regularly check for and apply security patches (sudo apt update && sudo apt upgrade).
+     - Enable automatic security updates to address newly discovered vulnerabilities.
+  2. Monitor Security Notices
+     - Stay updated via Ubuntu Security Notices for vulnerability disclosures and patch releases.
+  3. Security Auditing & Hardening
+     - Use tools like Lynis for system security audits.
+     - Implement Tripwire for file integrity monitoring.
 
-To share scripts owned by different users within e.g. the research grouop, instead of changing all reasearch scripts in /home and subdirections to chown -R :research -- create a shared directory the machine and log who read/write/executed the file(s)
+<br>
 
-The cron jobs have potential security considations:
-    -   The script runs as root, meaning it has high privileges.
-    -   If the script is not properly secured, it could be a security risk (e.g., backdoor or persistence mechanism).
-    -   Check what the script does, its permissions, and who has access to modify it.
-    -   Review system logs (/var/log/syslog or /var/log/cron.log) to verify execution.
-    -   The script is located in /root/, meaning it runs as root (high privilege).
-    -   Check what hardening_script_1.sh does to ensure it's legitimate and secure.
-    -   Review the script's permissions and logs to prevent unauthorized modifications.
-    -   If this script was placed by an attacker, it might indicate persistence (backdoor).
+### Lynis Audit Results & Hardening Recommendations
 
-
-Several security issues have been identified in the Linux kernel version 5.15.0-1077-aws. Notably, vulnerabilities in subsystems such as Netfilter, network traffic control, and VMware vSockets driver have been addressed.  ￼
-
-Recommendations:
-    1.  Update the Kernel:
-    -   Ensure your system is running the latest kernel version available for Ubuntu 22.04.5 LTS. Regularly updating the kernel addresses known vulnerabilities and enhances system stability.
-    2.  Review Installed Packages:
-    -   Regularly check for updates to installed packages. Tools like apt can assist in identifying and applying necessary updates.
-    3.  Enable Automatic Updates:
-    -   Configure your system to automatically install security updates to promptly address newly discovered vulnerabilities.
-    4.  Monitor Security Notices:
-    -   Stay informed by regularly reviewing Ubuntu Security Notices for updates related to your system's packages.  ￼
-
-
-
-our current kernel version, 5.15.0-1077-aws, may be susceptible to several vulnerabilities addressed in Ubuntu Security Notice USN-7021-5. These include issues in components such as GPU drivers, BTRFS, F2FS, GFS2 file systems, BPF subsystem, Netfilter, RxRPC session sockets, and the Integrity Measurement Architecture (IMA) framework. Notably, vulnerabilities like CVE-2024-27012 and CVE-2024-42228 have been identified.  
-
-nstalled Packages:
-
-A review of your installed packages reveals that some may have associated vulnerabilities:
-    -   OpenVPN: Two vulnerabilities, CVE-2024-28882 and CVE-2024-5594, were discovered in OpenVPN, potentially allowing a remote authenticated client to keep the connection active or cause a denial of service.  
-
-Recommendations:
-    1.  Kernel Update: Consider updating your kernel to a version that addresses the identified vulnerabilities. Regularly check for and apply security patches provided by Ubuntu.
-    2.  Package Updates: Ensure all installed packages are up-to-date. Regularly run sudo apt update and sudo apt upgrade to apply available security patches.
-    3.  Security Notices: Stay informed by monitoring Ubuntu Security Notices for updates related to your system's packages.  ￼
-    4.  Security Tools: Utilize security tools like Lynis for system audits and Tripwire for monitoring file integrity, as previously discussed.
-
-Run Lynis (and other) auditing packages on the system
+Running Lynis (and other security auditing tools) provides actionable insights into system vulnerabilities. Below is a summary of findings from a Lynis system audit:
 
 <details>
   <summary>Click to expand the results of the Lynis scan</summary>
@@ -2706,25 +2696,23 @@ iptables-save v1.8.7 (nf_tables): Could not fetch rule set generation id: Permis
 
 </details>
 
-Summary
+**Critical Fixes**
+  - Configure iptables/ufw for firewall security.
+  - Start kernel logging (rsyslog).
+  - Fix hostname format (Baker_Street_Linux_Server contains invalid _ characters).
 
-Critical Fixes
-  - Configure iptables/ufw for firewall security
-  - Start kernel logging (rsyslog)
-  - Fix hostname format (`Baker_Street_Linux_Server` contains invalid characters, `"_" is not allowed in hostnames`)
+**High-Priority Fixes**
+  - Install libpam-cracklib to enforce strong password security.
+  - Enable automatic security updates.
+  - Set password expiration policies to enforce password rotation.
+  - Install audit logging (auditd) for better system monitoring.
 
-High Priority Fixes
-  - Install libpam-cracklib for password security
-  - Enable automatic security updates
-  - Set password expiration policies
-  - Install audit logging (auditd)
+**Additional Hardening Recommendations**
+  - Remove insecure services (rsh-server, telnet).
+  - Verify and harden SSH settings.
+  - Purge unused packages to minimize attack surface.
 
-Additional Hardening
-  - Remove insecure services (rsh-server, telnet)
-  - Verify SSH settings
-  - Purge unused packages
-
-By proactively managing updates and monitoring security advisories, you can significantly reduce the risk of potential exploits on your system.
+By proactively managing updates and monitoring security advisories, you can significantly reduce the risk of potential exploits and enhance overall system security. Plus, it makes you look cool to your cybersecurity friends.
 
 <br><br><br><br>
 

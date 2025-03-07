@@ -21,10 +21,10 @@
 !Module 9 Day 2/
 !Module 9 Day 2/*
 
-# Ignore everything inside "Project 1/"
+# Ignore everything in Project 1/
 Project 1/**
 
-# But allow the specific Markdown file inside "Project 1/"
+# But allow this specific Markdown file
 !Project 1/Project 1 - Summary and Checklist - Broen v3.md
 
 # But maaaaan, ignore these subdirectories and any files or subdirectories
