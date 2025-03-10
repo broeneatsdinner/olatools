@@ -1,40 +1,42 @@
 # Ignore everything
 *
 
-# But not these files...
+# Allow Git to track directories so exceptions work
+!*/
+
+# Allow important files
 !.gitignore
 !README.md
 
-# Don't ignore anything insde the dotfiles/ directory
+# Allow the dotfiles/ directory and contents
 !dotfiles/
 !dotfiles/*
 
-# Don't ignore the create_secret_user/ directory
+# Allow the create_secret_user/ directory and contents
 !create_secret_user/
 !create_secret_user/*
 
-# Don't ignore the get_system_info/ directory
+# Allow the get_system_info/ directory and contents
 !get_system_info/
 !get_system_info/*
 
-# Don't ignore the Module 9 Day 2
+# Allow the Module 9 Day 2/ directory and contents
 !Module 9 Day 2/
 !Module 9 Day 2/*
 
-# Ignore everything in Project 1/
-Project 1/**
-
-# But allow this specific Markdown file
+# Allow specific paths/files within "Project 1"
 !Project 1/Project 1 - Summary and Checklist - Broen v3.md
-
-# But maaaaan, ignore these subdirectories and any files or subdirectories
-# contained within them
-ignored/
-**/ignored/
+!Project 1/scripts/
+!Project 1/scripts/**
 
 # Ignore macOS system files
+# (Redundant, but kept here for clarity and explicit rule)
 .DS_Store
 **/.DS_Store
 
 # Ignore any file that contains the string 'password' (placed last to override includes)
+# (Redundant, but kept here for clarity and explicit rule)
 *password*
+
+# Check status of ignored file with (example):
+# git check-ignore -v -- "Project 1/scripts/container_connect.sh"
