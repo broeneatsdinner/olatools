@@ -1,4 +1,5 @@
 #!/bin/bash
+# keepalive.sh - Function to keep SSH session alive
 
 # Keepalive script to prevent session timeout in the DU web lab environment.
 # This script moves the mouse and the terminal window to simulate activity.
@@ -10,56 +11,80 @@
 #   Install with: sudo apt update && sudo apt install -y curl
 # - A terminal window must be open and visible.
 
+# Detect OS and set package manager
+if [[ -f /etc/os-release ]]; then
+	source /etc/os-release
+	OS_FAMILY=$ID_LIKE  # Example: "debian" or "rhel fedora"
+else
+	OS_FAMILY="unknown"
+fi
+
+# Function to display installation instructions based on OS (Redhat vs Debian/Ubuntu)
+install_instructions() {
+	echo "Error: $1 is not installed."
+	if [[ "$OS_FAMILY" == *"debian"* ]]; then
+		echo "Please install it with: sudo apt update && sudo apt install -y $1"
+	elif [[ "$OS_FAMILY" == *"rhel"* || "$OS_FAMILY" == *"fedora"* ]]; then
+		echo "Please install it with: sudo dnf install -y $1"
+	else
+		echo "Unknown OS. Please install $1 manually."
+	fi
+	return 1
+}
+
 # Check if required commands are installed
 if ! command -v xdotool &>/dev/null; then
-	echo "Error: xdotool is not installed."
-	echo "Please install it with: sudo dnf install -y xdotool"
-	exit 1
+	install_instructions "xdotool"
+	return 1
 fi
 
 if ! command -v curl &>/dev/null; then
-	echo "Error: curl is not installed."
-	echo "Please install it with: sudo dnf install -y curl"
-	exit 1
+	install_instructions "curl"
+	return 1
 fi
 
-# Capture the window ID of the terminal running this script
-ORIGINAL_WID=$(xdotool getactivewindow)
+# Define keepalive function
+keepalive() {
+	echo "Starting keepalive session..."
 
-# Get screen dimensions
-SCREEN_WIDTH=$(xdotool getdisplaygeometry | awk '{print $1}')
-SCREEN_HEIGHT=$(xdotool getdisplaygeometry | awk '{print $2}')
+	# Define safe margins for screen movement
+	local WINDOW_WIDTH=800
+	local WINDOW_HEIGHT=600
+	local MARGIN=10
 
-# Define safe margins to keep the window within screen bounds
-WINDOW_WIDTH=800   # Adjust based on terminal size
-WINDOW_HEIGHT=600  # Adjust based on terminal size
-MARGIN=10
+	# Capture the window ID of the terminal running this function
+	local ORIGINAL_WID=$(xdotool getactivewindow)
 
-while true; do
-	# Get current time and public IP
-	TIMESTAMP=$(date +"%a %b %e %T UTC %Y")
-	PUBLIC_IP=$(curl -4 ifconfig.me)
+	# Get screen dimensions
+	local SCREEN_WIDTH
+	local SCREEN_HEIGHT
+	SCREEN_WIDTH=$(xdotool getdisplaygeometry | awk '{print $1}')
+	SCREEN_HEIGHT=$(xdotool getdisplaygeometry | awk '{print $2}')
 
-	# Print session alive message with timestamp and public IP
-	echo "Keeping session alive: $TIMESTAMP @ $PUBLIC_IP"
+	while true; do
+		# Get current time and public IP
+		local TIMESTAMP=$(date +"%a %b %e %T UTC %Y")
+		local PUBLIC_IP=$(curl -4 ifconfig.me)
 
-	# Move the mouse slightly
-	xdotool mousemove_relative -- 10 10
-	sleep 1
-	xdotool mousemove_relative -- -10 -10
+		# Print session alive message
+		echo "Keeping session alive: $TIMESTAMP @ $PUBLIC_IP"
 
-	# Ensure we don't move the wrong window
-	if [ -n "$ORIGINAL_WID" ]; then
-		# Ensure we don't move it off-screen
-		MAX_X=$((SCREEN_WIDTH - WINDOW_WIDTH - MARGIN))
-		MAX_Y=$((SCREEN_HEIGHT - WINDOW_HEIGHT - MARGIN))
+		# Move the mouse slightly to simulate activity
+		xdotool mousemove_relative -- 10 10
+		sleep 1
+		xdotool mousemove_relative -- -10 -10
 
-		NEW_X=$((RANDOM % MAX_X + MARGIN))
-		NEW_Y=$((RANDOM % MAX_Y + MARGIN))
+		# Ensure we only move the original window
+		if [[ -n "$ORIGINAL_WID" ]]; then
+			local MAX_X=$((SCREEN_WIDTH - WINDOW_WIDTH - MARGIN))
+			local MAX_Y=$((SCREEN_HEIGHT - WINDOW_HEIGHT - MARGIN))
 
-		xdotool windowmove "$ORIGINAL_WID" "$NEW_X" "$NEW_Y"
-	fi
+			local NEW_X=$((RANDOM % MAX_X + MARGIN))
+			local NEW_Y=$((RANDOM % MAX_Y + MARGIN))
 
-	# Wait before repeating
-	sleep 30
-done
+			xdotool windowmove "$ORIGINAL_WID" "$NEW_X" "$NEW_Y"
+		fi
+
+		sleep 30  # Wait before repeating
+	done
+}
