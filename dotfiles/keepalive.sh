@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Keepalive script to prevent session timeout in a web lab environment.
+# Keepalive script to prevent session timeout in the DU web lab environment.
 # This script moves the mouse and the terminal window to simulate activity.
 
 # Requirements:
