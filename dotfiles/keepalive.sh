@@ -13,15 +13,18 @@
 # Check if required commands are installed
 if ! command -v xdotool &>/dev/null; then
 	echo "Error: xdotool is not installed."
-	echo "Please install it with: sudo apt update && sudo apt install -y xdotool"
+	echo "Please install it with: sudo dnf install -y xdotool"
 	exit 1
 fi
 
 if ! command -v curl &>/dev/null; then
 	echo "Error: curl is not installed."
-	echo "Please install it with: sudo apt update && sudo apt install -y curl"
+	echo "Please install it with: sudo dnf install -y curl"
 	exit 1
 fi
+
+# Capture the window ID of the terminal running this script
+ORIGINAL_WID=$(xdotool getactivewindow)
 
 # Get screen dimensions
 SCREEN_WIDTH=$(xdotool getdisplaygeometry | awk '{print $1}')
@@ -45,10 +48,8 @@ while true; do
 	sleep 1
 	xdotool mousemove_relative -- -10 -10
 
-	# Get the currently active window (foreground terminal)
-	ACTIVE_WID=$(xdotool getactivewindow)
-
-	if [ -n "$ACTIVE_WID" ]; then
+	# Ensure we don't move the wrong window
+	if [ -n "$ORIGINAL_WID" ]; then
 		# Ensure we don't move it off-screen
 		MAX_X=$((SCREEN_WIDTH - WINDOW_WIDTH - MARGIN))
 		MAX_Y=$((SCREEN_HEIGHT - WINDOW_HEIGHT - MARGIN))
@@ -56,9 +57,9 @@ while true; do
 		NEW_X=$((RANDOM % MAX_X + MARGIN))
 		NEW_Y=$((RANDOM % MAX_Y + MARGIN))
 
-		xdotool windowmove "$ACTIVE_WID" "$NEW_X" "$NEW_Y"
+		xdotool windowmove "$ORIGINAL_WID" "$NEW_X" "$NEW_Y"
 	fi
 
-	# Wait a bit before repeating
+	# Wait before repeating
 	sleep 30
 done
