@@ -1,0 +1,548 @@
+#!/usr/bin/env bash
+# -------------------------
+# --    Initialization    --
+# -------------------------
+
+# Set strict error handling
+# set -euo pipefail
+
+# Ensure cleanup happens on exit, kill signals, or dropped connections
+# trap '[ -f /dev/shm/.remote_bashrc ] && rm -f /dev/shm/.remote_bashrc' EXIT SIGINT SIGTERM
+
+# -------------------------
+# --    .bash_aliases    --
+# -------------------------
+
+# Alias list
+alias aliases='cat ~/.bash_aliases | more'
+
+# Quick Shell Changing
+alias bash-shell='chsh -s /bin/bash' # Use bash
+alias zsh-shell='chsh -s /bin/zsh' # Use zsh
+alias see-shells='cat /etc/shells' # See a list of included shells you can use
+
+# For a courteous super-user; no need to be excessively proud or self-confident
+alias please='sudo '
+# Also because this team of one is an idiod *t
+alias sodu='sudo '
+alias sodo='sudo '
+alias sdoo='sudo '
+alias sudu='sudo '
+alias sduo='sudo '
+
+# Finding an alternative to ping, since ICMP is blocked upstream by AWS EC2 or school firewall
+if command -v hping3 &> /dev/null; then
+	alias ping='sudo hping3 -S -p 443 -c 4'
+else
+	echo "Warning: hping3 is not installed. Install it with: sudo apt update && sudo apt install hping3 -y"
+fi
+
+# Reloading / Refreshing the .bash_aliases and .bash_functions
+alias reload='source ~/dotfiles/.bash_aliases && source ~/dotfiles/.bash_functions && printf "%b" "\e[1;34m.bash_aliases\e[0m and \e[1;34m.bash_functions\e[0m have been reloaded.\n"'
+
+# Easier navigation: .., ..., ...., .....
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias -- -='cd -'
+
+# mv, rm, cp, mkdir - Verbose Mode by default
+alias mv='mv -v'
+alias rm='rm -v'
+alias cp='cp -v'
+alias mkdir="mkdir -pv"
+#                   │└─ list created directories
+#                   └─ create intermediate directories
+
+# File size
+alias fs="stat -f \"%z bytes\""
+
+# Window size
+alias getsize='printf "%b" "The current size of your terminal ... behold ... Columns: \e[1;34m$(tput cols)\e[0m Rows: \e[1;34m$(tput lines)\e[0m"'
+
+# Shortcuts: Directories (listing)
+# A = include hidden (but not . or ..), F = put `/` after folders, h = human byte unit suffixes
+alias ls='ls -lh --color=auto'
+alias ll='ls -l'
+alias la='ls -lA'
+alias l='ls -CA'
+
+# Shortcuts: Directories (navigation)
+alias q='exit'
+alias d='cd ~/.dotfiles'
+alias b='cd ~/.dotfiles/bin'
+alias dl='cd ~/Downloads'
+alias dt='cd ~/Desktop'
+alias doc='cd ~/Documents'
+alias g='cd ~/'
+
+# Shortcuts: Commands (laziness
+alias k9='kill -9'
+[[ "$(uname -s)" == "Linux" ]] && alias subl='rsub' # Install rsub using apt to locally open files with Sublime Text
+
+# Last time file opened/accessed
+# @see https://unix.stackexchange.com/questions/8840/last-time-file-opened
+# So, generally, what you want to see is the atime of a file. You can get
+# that with stat or with ls. You can use ls -lu to do this, although I prefer
+# to use ls -l --time=atime (which should be supported in almost all modern
+# Linux distributions) because I don't use it often, and when I do I can
+# remember this alias better. And to sort by time, I added the -t flag to ls.
+alias fo="ls -lt --time=atime"
+
+# Computer & Connection Testing (Requires python to be installed)
+alias speedtest="curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -"
+
+# Print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
+
+# ---------------------------
+# --    .bash_functions    --
+# ---------------------------
+
+#
+# bash_functions help
+#
+# functions - display a summary of custom user functions
+# usage: functions
+functions() {
+	local FUNC_FILE="${HOME}/.bash_functions"
+
+	# If running on a remote system (where $REMOTE_BASHRC is sourced), use it instead
+	if [[ -f "$REMOTE_BASHRC" ]]; then
+		FUNC_FILE="$REMOTE_BASHRC"
+	fi
+
+	# Useless cat (also known as a Useless Use of cat (UUOC)).
+	# cat "$FUNC_FILE" | grep -B 1 usage
+	# Better:
+	grep -B 1 usage "$FUNC_FILE"
+}
+
+################################################################################
+#
+# Navigation and Basic Operations
+#
+################################################################################
+
+# mkcd - create a directory and immediately change into it
+# usage: mkcd <directory>, can also mkcd <directory1> <directory2> <directory3>
+function mkcd() {
+	if [ -z "$1" ]; then
+		echo "Help: mkcd creates a directory if it doesn't exist, then changes into it."
+		echo "Usage: mkcd <path>"
+		return 0
+	fi
+
+	# If using mkcd dir1 dir2 dir3, the following will change into the last dir created:
+	mkdir -p -- "$@" && [[ -d "$_" ]] && cd -P -- "$_"
+	# If using mkcd dir1 dir2 dir3, the following will change into the first dir created:
+	# mkdir -p -- "$@" && cd -P -- "$1" || exit;
+}
+
+# lcd - change to specified directory and immediately list its contents
+# usage: lcd <directory>
+lcd() {
+	cd "$@" && ll
+}
+
+# bak - backup selected file; it appends .broen extension (instead of .bak)
+# usage: bak <filename>
+bak() {
+	cp $1{,.broen}
+}
+
+# wfs - watch a file's size, update every 2 seconds
+# usage: wfs <filename>
+wfs() {
+	watch -n 2 "ls -lh \"$1\" | awk '{print \$5}'"s
+}
+
+################################################################################
+#
+# Find, Search and Grep (Global Regular Expression Print)
+#
+################################################################################
+
+# fp - find a file by name in current working directory
+# usage: fp <name>
+fp() {
+	sudo find . -iname '*'$*'*' -ls
+}
+
+# fr - find a file by name globally
+# usage: fr <name>
+fr() {
+	sudo find / -iname '*'$*'*' -ls
+}
+
+# fext - find files by extension in current working directory
+# usage: fext <txt>
+fext() {
+	# sort -f flag for sort ignores case, cut -d flag sets delimiter as "/"
+	find . -type f -maxdepth 1 -name "*.$1" | sort -f | cut -d "/" -f 2
+}
+
+# fcd - find a file by name in selected path
+# usage: fcd <name> <path>
+fcd() {
+	sudo find $2 -iname '*'$1'*' -ls
+}
+
+# fpg - find a file by grepping in current working directory
+# usage: fpg <word>
+fpg() {
+	sudo grep --color=auto -HIrFo -- $* .
+}
+
+# frg - find a file by grepping in rootv (searches by grepping for passed string in each file)
+# usage: frg <word>
+frg() {
+	sudo grep --color=auto -HIrFo -- $* /
+}
+
+# fcdg - find a file by grepping in selected path
+# usage: fcdg <word> <path>
+fcdg() {
+	sudo grep --color=auto -HIrFo -- $1 $2
+}
+
+# mang - search in man page
+# usage: mang <manpage> <word>
+mang() {
+	man $1 | grep --color=auto $2 -C 5
+}
+
+# hig - search in history
+# usage: hig <word>
+hig() {
+	history | grep --color=auto $* -C 5
+}
+
+# @see https://stackoverflow.com/questions/16956810/how-to-find-all-files-containing-a-specific-text-string-on-linux
+# fstring - search contents of all files in current directory for string
+# usage: fstring <string>
+fstring() {
+	if [[ -z "$1" ]] ; then
+		echo "This command requires parameters."
+		echo "usage: fstring <string>"
+		return 1
+	fi
+	grep -Ril "$1" .
+	# i stands for ignore case (optional in your case).
+	# R stands for recursive.
+	# l stands for "show the file name, not the result itself".
+	# . stands for starting at the current directory.
+}
+
+# psg - check if a process is running by name and return PID(s)
+# usage: psg <process-name>
+psg() {
+	if ps ax | grep -v grep | grep $1 > /dev/null
+	then
+		ps ax | grep --color=auto $1 | grep -v grep
+	else
+		echo "$1 is not running"
+	fi
+}
+
+################################################################################
+#
+# CLI Command Line Utilities
+#
+################################################################################
+
+# calc - basic calculator
+# usage: calc <expression>
+calc() {
+	echo "scale=2; $1" | bc # scale is how many decimal points you want
+}
+
+# myip - get the current IP addresses
+# usage: myip
+myip() {
+	# External/Public IP
+	PUBLIC_CHECK_1=$(curl ipinfo.io/ip 2>/dev/null && echo)
+	PUBLIC_CHECK_2=$(curl api.ipify.org 2>/dev/null && echo)
+
+	# External/Public Reverse DNS Lookup
+	DNS1=$(curl -s ipinfo.io/$(curl -s ipinfo.io/ip)/hostname)
+
+	# Local IP
+	LOCAL_CHECK_1=$(ipconfig getifaddr en0)
+	LOCAL_CHECK_2=$(ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1')
+
+	echo "Public IP Check 1: $PUBLIC_CHECK_1"
+	echo "Public IP Check 2: $PUBLIC_CHECK_2"
+	echo "---"
+	echo "Reverse DNS Lookup | Hostname: $DNS1"
+	echo "---"
+	echo "Local Network IP Check 1: $LOCAL_CHECK_1"
+	echo "Local Network IP Check 2: $LOCAL_CHECK_2"
+
+	# @see https://superuser.com/questions/998854/how-to-redirect-stderr-to-both-file-and-console-and-stdout-to-file-only
+	# command 2>&1 1>logfile | tee -a logfile
+
+}
+
+# myos - get the current OS information, from multiple sources
+# usage: myos
+myos() {
+	echo "Command: cat /etc/os-release"
+	echo "----------------------------"
+	echo ""
+	if [ -f /etc/os-release ]; then
+		awk -F= '
+		{
+			key_length = length($1)
+			if (key_length > max_length) {
+				max_length = key_length
+			}
+		}
+		END {
+			max_length += 1  # Add padding for better readability
+			while ((getline < "/etc/os-release") > 0) {
+				split($0, parts, "=")
+				gsub("\"", "", parts[2])  # Remove double quotes
+				printf "%-*s %s\n", max_length, parts[1] ":", parts[2]
+			}
+		}' /etc/os-release
+	else
+		echo "/etc/os-release not available (are you on MacOS, not Linux)"
+	fi
+	echo ""
+	echo "Command: lsb_release -a"
+	echo "-----------------------"
+	echo ""
+	lsb_release -a 2>/dev/null || echo "lsb_release command not available (are you on MacOS, not Linux)"
+	echo ""
+	echo "Command: uname -r"
+	echo "-----------------"
+	echo ""
+	uname -r
+	echo ""
+}
+
+# create - create a new bash script, make it executable for the user, start editing it
+# usage: create <script_name>
+create() {
+	# Check if a filename is provided
+	if [[ -z "$1" ]]; then
+		echo "Error: No filename provided."
+		echo "Usage: create <script_name>"
+		return 1
+	fi
+
+	# Ensure the filename has a .sh extension
+	if [[ "$1" != *.sh ]]; then
+		script_name="$1.sh"
+	else
+		script_name="$1"
+	fi
+
+	# Check if the file already exists
+	if [[ -e "$script_name" ]]; then
+		echo "Error: File '$script_name' already exists."
+		return 1
+	fi
+
+	# Create the file with a shebang, set permissions
+	if echo "#!/usr/bin/env bash" > "$script_name" && chmod u+x "$script_name"; then
+		full_path="$(realpath "$script_name")"
+		echo "Created: $script_name"
+		echo "Full path to script: $full_path"
+
+		# Open the file in Sublime Text if available, otherwise use nano
+		if command -v subl >/dev/null 2>&1; then
+			subl "$script_name"
+		elif command -v nano >/dev/null 2>&1; then
+			nano "$script_name"
+		else
+			echo "Warning: No suitable text editor found. Open '$script_name' manually."
+		fi
+	else
+		echo "Error: Failed to create '$script_name'."
+		return 1
+	fi
+}
+
+# -------------------------
+# --    .bash_profile    --
+# -------------------------
+
+# Use nano as the default editor (crontab -e and such)
+export EDITOR=/usr/bin/nano
+
+# Prompt Coloring
+export CLICOLOR=1
+color_prompt=yes
+
+# OK a real gangsta prompt
+
+# Ensure TERM is always set
+if [[ "${COLORTERM:-}" = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
+	export TERM=gnome-256color
+elif infocmp xterm-256color >/dev/null 2>&1; then
+	export TERM=xterm-256color
+else
+	export TERM=xterm-256color  # Fallback to ensure TERM is always set
+fi
+
+if tput setaf 1 &> /dev/null; then
+	tput sgr0
+	if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+		MAGENTA=$(tput setaf 9)
+		ORANGE=$(tput setaf 172)
+		GREEN=$(tput setaf 190)
+		PURPLE=$(tput setaf 141)
+	else
+		MAGENTA=$(tput setaf 5)
+		ORANGE=$(tput setaf 4)
+		GREEN=$(tput setaf 2)
+		PURPLE=$(tput setaf 1)
+	fi
+	BOLD=$(tput bold)
+	RESET=$(tput sgr0)
+else
+	MAGENTA="\033[1;31m"
+	ORANGE="\033[1;33m"
+	GREEN="\033[1;32m"
+	PURPLE="\033[1;35m"
+	BOLD=""
+	RESET="\033[m"
+fi
+
+export MAGENTA
+export ORANGE
+export GREEN
+export PURPLE
+export BOLD
+export RESET
+
+# Building new colors - Gradient Grays
+color_number="236"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY0="$color_mixer"
+
+color_number="238"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY1="$color_mixer"
+
+color_number="240"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY2="$color_mixer"
+
+color_number="242"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY3="$color_mixer"
+
+color_number="244"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY4="$color_mixer"
+
+color_number="246"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY5="$color_mixer"
+
+color_number="248"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY6="$color_mixer"
+
+color_number="250"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY7="$color_mixer"
+
+color_number="252"
+color_mixer='\033[38;5;'"$color_number"m""
+GRAY8="$color_mixer"
+
+color_number="22"
+color_mixer='\033[38;5;'"$color_number"m""
+GREEN0="$color_mixer"
+
+color_number="28"
+color_mixer='\033[38;5;'"$color_number"m""
+GREEN1="$color_mixer"
+
+color_number="34"
+color_mixer='\033[38;5;'"$color_number"m""
+GREEN2="$color_mixer"
+
+color_number="40"
+color_mixer='\033[38;5;'"$color_number"m""
+GREEN3="$color_mixer"
+
+color_number="46"
+color_mixer='\033[38;5;'"$color_number"m""
+GREEN4="$color_mixer"
+
+# Change this symbol to something sweet.
+symbol="\[${GRAY1}\]> "
+
+# Reapply the custom PS1 after system scripts reset it
+export PS1="\n\[${GREEN4}\]$(pwd)\[$RESET\]\n\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\]$symbol\[$RESET\] "
+
+# Ensure PS1 persists after system-wide resets
+export PROMPT_COMMAND='export PS1="\n\[${GREEN4}\]$(pwd)\[$RESET\]\n\[${GREEN1}\]\u \[$RESET\]in \[$GREEN4\]\w\[$RESET\] on \[$GREEN1\]\h\[$RESET\]$symbol\[$RESET\] "; unset PROMPT_COMMAND'
+
+# ------------------------------
+# --    .best_bash_history    --
+# ------------------------------
+
+# Good Reading:
+# https://www.cherryservers.com/blog/a-complete-guide-to-linux-bash-history
+
+# Save 10,000 lines of history in memory
+HISTSIZE=10000
+# Save 2,000,000 lines of history to disk (will have to grep ~/.bash_history for full listing)
+HISTFILESIZE=2000000
+# Append to history instead of overwrite
+# Check for presence of shopt command; if not available, use setopt
+command -v shopt &> /dev/null && shopt -s histappend || setopt histappend
+# Ignore redundant or space commands
+HISTCONTROL=ignoreboth
+# Ignore more
+HISTIGNORE='pwd*:clear' # ls*:ll*:
+# Set time format
+HISTTIMEFORMAT='%F %T '
+# Multiple commands on one line show up as a single line
+command -v shopt &> /dev/null && shopt cmdhist
+# Append new history lines, clear the history list, re-read the history list, print prompt.
+# export PROMPT_COMMAND="history -a; history -c; history -r; ${PROMPT_COMMAND:-}"
+# Check if PROMPT_COMMAND already contains "history -a" before appending
+if [[ ! "$PROMPT_COMMAND" =~ "history -a" ]]; then
+	export PROMPT_COMMAND="history -a; ${PROMPT_COMMAND:-}"
+fi
+
+if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
+	export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# -----------------------------------
+# --    .some_fun_things_to_try    --
+# -----------------------------------
+echo
+echo "Some fun things to try"
+echo "> date"
+echo "> timedatectl list-timezones"
+echo "> sudo timedatectl set-timezone America/Denver"
+echo "> date"
+echo
+echo "> systemd-resolve --status | grep 'DNS Servers' -A2"
+echo
+echo "If result is:"
+echo "DNS Servers: 8.8.8.8
+DNS Domain: eu-west-2.compute.internal
+--
+DNS Servers: 10.0.0.2
+DNS Domain: eu-west-2.compute.internal"
+echo
+echo "Fix: Force AWS VPC DNS (10.0.0.2) as Primary"
+echo "> echo \"nameserver 10.0.0.2\" | sudo tee /etc/resolv.conf"
+echo "> echo -e \"[Resolve]\nDNS=10.0.0.2\nFallbackDNS=8.8.8.8\" | sudo tee /etc/systemd/resolved.conf.d/aws-dns.conf"
+echo "> sudo systemctl restart systemd-resolved"
+echo "> cat /etc/systemd/resolved.conf.d/aws-dns.conf"
+echo
+echo "29d : 14h : 56m : 43s"
+echo
+echo "boom chicken."
