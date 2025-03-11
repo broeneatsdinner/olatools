@@ -1,0 +1,13 @@
+# dotfiles/pwords-example
+
+# To use this file, rename it to 'passwords' and keep it in the same directory
+# in which you found it.
+# Once you've done that, complete the variable assignment with the values that
+# you are using.
+
+# Modify these to suit your needs
+export CYBER_USER="your-ssh-user"
+export CYBER_PASS="your-ssh-user-password"
+
+# Can leave this unchanged
+export CYBER_BASHRC="preferences_and_tools_to_send"
