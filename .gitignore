@@ -33,6 +33,10 @@
 !Project 2/
 !Project 2/*
 
+# Allow the Project 3/ directory and contents
+!Project 3/
+!Project 3/*
+
 # Ignore macOS system files
 # (Redundant, but kept here for clarity and explicit rule)
 .DS_Store
