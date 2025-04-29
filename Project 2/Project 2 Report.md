@@ -480,152 +480,60 @@ information, including the flag:
  
 ![image](https://github.com/user-attachments/assets/c9a3a3ea-1a94-4846-b41f-1ab5930a87d9)
  
- 
- 
- 
- 
- 
-  
-
-
 # Summary Vulnerability Overview
  
- 
-Vulnerability  Severity 
-Day 1 flag 1
+## Summary Vulnerability Overview
 
-: XSS Reflected 
-Details:   
-info about xss reflected  Critical 
-what it does to them 
-how to fix 
-   
-Day 1 flag 2
+| **Vulnerability** | **Severity** |
+| :--- | :--- |
+| Day 1 flag 1: XSS Reflected<br>Details:<br>info about xss reflected<br>what it does to them<br>how to fix | 🔴 **Critical** |
+| Day 1 flag 2: XSS Reflected (Advanced) | 🔴 **Critical** |
+| Day 1 flag 3: XSS Stored | 🔴 **Critical** |
+| Day 1 Flag 4: Sensitive data exposure | 🔴 **Critical** |
+| Day 1 Flag 5: Local file inclusion | 🔴 **Critical** |
+| Day 2 Flag 1: Open source exposed data | 🟠 **High** |
+| Day 2 Flag 2: Exposed IP Address | 🟠 **High** |
+| Day 2 Flag 3: Open-source exposed data | 🔵 **Medium** |
+| Day 2 Flag 4: Host Enumeration | 🔵 **Medium** |
+| Day 2 Flag 5: nmap | 🟠 **High** |
+| Day 3 Flag 1: OSINT | 🔴 **Critical** |
+| Day 3 Flag 2: Http Enumeration | 🔴 **Critical** |
+| Day 3 Flag 3: FTP Enumeration | 🔴 **Critical** |
+| Day 3 Flag 4: Metasploit | 🔴 **Critical** |
+| Day 3 Flag 5: Common Tasks | 🔴 **Critical** |
 
-: XSS Reflected (Advanced)  Critical 
-   
-Day 1 flag 3
-
-: XSS Stored  Critical 
-   
-Day 1 Flag 4
-
-: Sensitive data exposure  Critical 
-   
-Day 1 Flag 5
-
-: Local file inclusion  Critical 
-   
-Day 2 Flag 1
-
-: Open source exposed data  High 
-   
-Day 2 Flag 2
-
-: Exposed IP Address  High 
-   
-Day 2 Flag 3
-
-: Open-source exposed data  Medium 
-   
-Day 2 Flag 4
-
-: Host Enumeration  Medium 
-   
-Day 2 Flag 5
-
-: nmap  High 
-   
-Day 3 Flag 1
-
-: OSINT  Critical 
-   
-Day 3 Flag 2
-
-: Http Enumeration   Critical 
-   
-Day 3 Flag 3
-
-: FTP Enumeration  Critical 
-   
-Day 3 Flag 4
-
-: Metasploit  Critical 
-   
-Day 3 Flag 5
-
-: Common Tasks  Critical 
-   
-   
- 
-  
-
-
- 
- 
 The following summary tables represent an overview of the assessment findings for this penetration 
 test: 
  
-Scan Type  Total 
-192.168.14.35 
-76.223.105.230 
-192.168.13.10 
-192.168.13.11 
-Hosts  192.168.13.12 
-192.168.13.13 
-192.168.13.14 
-172.22.117.20 
- 
-Port 21 : FTP 
-Port 22 : SSH 
-Port 25 : SMTP 
-Port 80 : HTTP 
-Ports 
-Port 110 : POP3 
-Port 443 : HTTPS 
- 
- 
- 
-Exploitation Risk  Total 
-Critical  11 
-High  2 
-Medium  2 
-Low  0 
- 
+## Scan Results
+
+| **Scan Type** | **Total** |
+| :--- | :--- |
+| Hosts | 192.168.14.35<br>76.223.105.230<br>192.168.13.10<br>192.168.13.11<br>192.168.13.12<br>192.168.13.13<br>192.168.13.14<br>172.22.117.20 |
+| Ports | **Port 21** : FTP<br>**Port 22** : SSH<br>**Port 25** : SMTP<br>**Port 80** : HTTP<br>**Port 110** : POP3<br>**Port 443** : HTTPS |
+
+## Exploitation Risk Overview
+
+| **Exploitation Risk** | **Total** |
+| :--- | :--- |
+| 🔴 **Critical** | 11 |
+| 🟠 **High** | 2 |
+| 🔵 **Medium** | 2 |
+| 🟢 **Low** | 0 | 
  
 # Vulnerability Findings
  
- 
- 
-Vulnerability 1  Findings 
-Title  Day 1 Flag 1
+| **Vulnerability 1** | **Findings** |
+| :--- | :--- |
+| **Title** | Day 1 Flag 1: XSS Reflected |
+| **Type (Web app / Linux OS / Windows OS)** | Web Application |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | The Rekall VR Planning welcome page is vulnerable to reflected cross-site scripting (XSS). Unsanitized user input passed through the payload parameter in the URL is directly rendered in the HTML, allowing the execution of arbitrary JavaScript in the victim's browser. |
+| **Images** | ![image](https://github.com/user-attachments/assets/46e57694-c1a1-44cb-a3e8-0d7291da13d9) | 
+| **Images** | ![image](https://github.com/user-attachments/assets/72a9e94b-aec4-408d-af90-48d0c93a306c) | 
+| **Affected Hosts** | 192.168.14.35 |
+| **Remediation** | - Implement output encoding (e.g., use `htmlspecialchars()` in PHP).<br>- Use a framework that provides built-in XSS protections.<br>- Implement a Content Security Policy (CSP) |
 
- XSS Reflected 
-Type (Web app /  Web Application 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical 
-The Rekall VR Planning welcome page is vulnerable to reflected cross-site 
-scripting (XSS). Unsanitized user input passed through the payload parameter 
-Description 
-in the URL is directly rendered in the HTML, allowing the execution of arbitrary 
-JavaScript in the victim's browser. 
-Images  Flag 1 input: 
- 
-  
-
-
- 
-Flag 1 output: 
- 
-Affected Hosts  192.168.14.35 
-- Implement output encoding (e.g., use htmlspecialchars() in 
-PHP). 
-Remediation 
-- Use a framework that provides built-in XSS protections. 
-- Implement a Content Security Policy (CSP) 
- 
- 
 Vulnerability 2  Findings 
 Title  Day 1 flag 2
 
