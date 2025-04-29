@@ -531,8 +531,8 @@ test:
 | **Type (Web app / Linux OS / Windows OS)** | Web Application |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | The Rekall VR Planning welcome page is vulnerable to reflected cross-site scripting (XSS). Unsanitized user input passed through the payload parameter in the URL is directly rendered in the HTML, allowing the execution of arbitrary JavaScript in the victim's browser. |
-| **Images** | ![image](https://github.com/user-attachments/assets/46e57694-c1a1-44cb-a3e8-0d7291da13d9) | 
-| **Images** | ![image](https://github.com/user-attachments/assets/72a9e94b-aec4-408d-af90-48d0c93a306c) | 
+| **Images** | Input: <br> ![image](https://github.com/user-attachments/assets/46e57694-c1a1-44cb-a3e8-0d7291da13d9) | 
+| **Images** | Output: <br> ![image](https://github.com/user-attachments/assets/72a9e94b-aec4-408d-af90-48d0c93a306c) | 
 | **Affected Hosts** | 192.168.14.35 |
 | **Remediation** | - Implement output encoding (e.g., use `htmlspecialchars()` in PHP).<br>- Use a framework that provides built-in XSS protections.<br>- Implement a Content Security Policy (CSP) |
 
@@ -544,6 +544,8 @@ test:
 | **Type** | Web Application |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | The first field in Memory-Planner.php is vulnerable to reflected XSS. The application attempts to block inputs by removing the string "script"; however, attackers can bypass this by obfuscating the tag using split or mixed-case formatting. This allows JavaScript to execute in the browser. |
+| **Images** | Input: <br> ![image](https://github.com/user-attachments/assets/94f06f19-583f-4f93-b352-a1fa13d64c10) | 
+| **Images** | Output: <br> ![image](https://github.com/user-attachments/assets/0a215342-cc1d-4c8b-a309-db52c91004f3) | 
 | **Affected Hosts** | 192.168.14.35 |
 | **Remediation** | - Use a robust input sanitizer like DOMPurify or built-in framework sanitization<br>- Implement Content Security Policy (CSP) headers<br>- Do not reflect raw user input back into HTML pages |
 
@@ -555,6 +557,8 @@ test:
 | **Type** | Web Application |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | The comments.php page is vulnerable to stored XSS. When a user submits a comment containing JavaScript, the content is saved without proper sanitization and later rendered directly into the HTML of the page. This allows persistent client-side code execution in the context of any user viewing the page. |
+| **Images** | Input: <br> ![image](https://github.com/user-attachments/assets/a2dc0a93-33f1-44c9-9eb8-463750ec6bc9) | 
+| **Images** | Output: <br> ![image](https://github.com/user-attachments/assets/a0c5de70-0ddf-46e1-8671-20ecc97e46e2) | 
 | **Affected Hosts** | 192.168.14.35 |
 | **Remediation** | - Sanitize and encode user input on both client and server sides.<br>- Do not render raw HTML from user input.<br>- Use a security-focused library like DOMPurify to filter unsafe content.<br>- Implement a strong Content Security Policy (CSP). |
 
@@ -566,6 +570,8 @@ test:
 | **Type** | Web Application |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | The About-Rekall.php page returns an internal flag value (nckd97dk6sh2) in its HTTP response headers. This constitutes a sensitive data leak and could lead to information disclosure about internal variables, debugging flags, or backend logic. |
+| **Images** | Input: <br> ![image](https://github.com/user-attachments/assets/9cd95caf-9a46-4086-8536-8049b3044dcf) | 
+| **Images** | Output: <br> ![image](https://github.com/user-attachments/assets/1daa2ea2-ba22-4f60-aea4-5cb13deb5166) | 
 | **Affected Hosts** | 192.168.14.35 |
 | **Remediation** | - Remove sensitive data from HTTP headers in production environments.<br>- Disable verbose or debug headers.<br>- Conduct regular manual and automated security audits to check for this type of information disclosure. |
 
@@ -577,6 +583,7 @@ test:
 | **Type** | Web Application |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | The second field on Memory-Planner.php accepts file uploads but fails to enforce file type validation or content inspection. This allows attackers to upload and execute malicious PHP files. Sensitive files are stored in an accessible directory and executed by the server, leading to Local File Inclusion (LFI) and possible Remote Code Execution (RCE). |
+| **Images** | ![image](https://github.com/user-attachments/assets/7088c4c2-df09-4427-bee1-b5e01d4ec35c) | 
 | **Affected Hosts** | 192.168.14.35 |
 | **Remediation** | - Restrict file types (e.g., only allow .jpg, .png, etc.)<br>- Validate file contents and MIME type<br>- Rename and store files outside the web root<br>- Disable execution permissions on uploaded file directories<br>- Consider using third-party libraries for secure upload handling |
 
@@ -588,6 +595,7 @@ test:
 | **Type** | Web Application |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | Using publicly available WHOIS data, the flag was discovered in the “Registrant Street” field. This reveals potentially sensitive internal naming or identifiers that could be used for social engineering or passive recon. |
+| **Images** | ![image](https://github.com/user-attachments/assets/2ac1047c-4043-488c-a628-ede0c32e864b) | 
 | **Affected Hosts** | 76.223.105.230 |
 | **Remediation** | - Use privacy protection services or redacted WHOIS records for sensitive domain registrations. |
 
@@ -599,6 +607,7 @@ test:
 | **Type** | Linux OS |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | The IP address of the totalrekall.xyz domain can be easily resolved via ping or nslookup, revealing backend infrastructure and aiding in target scoping. |
+| **Images** | ![image](https://github.com/user-attachments/assets/50d0a5f3-a434-453a-96c6-0426ee0c0744) | 
 | **Affected Hosts** | 76.223.105.230 |
 | **Remediation** | - Use reverse proxies, CDNs, or cloud firewall services to hide origin IPs. |
 
@@ -610,6 +619,7 @@ test:
 | **Type** | Web Application |
 | **Risk Rating** | 🔹 **Medium** |
 | **Description** | By searching public SSL certificate logs on crt.sh, a certificate was found issued for a subdomain: s7euwehd.totalrekall.xyz, which directly leaks the flag. |
+| **Images** | ![image](https://github.com/user-attachments/assets/43ef82cc-43d2-40e3-bd97-61f0f60879f3) | 
 | **Affected Hosts** | 76.223.105.230 |
 | **Remediation** | - Avoid embedding sensitive tokens in subdomain names or certificates.<br>- Use environment-neutral identifiers. |
 
@@ -621,6 +631,7 @@ test:
 | **Type** | Linux |
 | **Risk Rating** | 🔹 **Medium** |
 | **Description** | An nmap ping sweep across the 192.168.13.0/24 subnet identified 6 total hosts, including the attacker's. |
+| **Images** | ![image](https://github.com/user-attachments/assets/505af56d-2b43-4bbf-8fd5-9056bf79a96e) | 
 | **Affected Hosts** | 192.168.13.10, 192.168.13.11, 192.168.13.12, 192.168.13.13, 192.168.13.14 |
 | **Remediation** | - Implement firewalls or intrusion prevention systems to detect/limit ICMP-based enumeration. |
 
@@ -632,6 +643,7 @@ test:
 | **Type** | Linux OS |
 | **Risk Rating** | 🟠 **High** |
 | **Description** | An aggressive Nmap scan revealed that the host 192.168.13.13 is running Drupal, specifically version 8. This is vulnerable to known exploits and should be hardened or removed. |
+| **Images** | ![image](https://github.com/user-attachments/assets/d51fffe1-b3b4-4287-b68f-d465df49e6d1) | 
 | **Affected Hosts** | 192.168.13.13 |
 | **Remediation** | - Restrict public access<br>- Patch the CMS<br>- Disable default files like INSTALL.txt or README.txt. |
 
@@ -643,6 +655,8 @@ test:
 | **Type** | Web Application/Linux OS |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | Credentials were found in a public GitHub repository (xampp.userspage) associated with totalrekall.xyz. One of the exposed user hashes was in Apache $apr1$ (MD5-based) format. Using john and a wordlist, the hash was successfully cracked. |
+| **Images** | Input: <br> ![image](https://github.com/user-attachments/assets/169bc863-e9a2-445c-80f4-79350be077d9) | 
+| **Images** | Output: <br> ![image](https://github.com/user-attachments/assets/140ea79e-dc09-4b20-ae9f-042b2e5626ff) | 
 | **Affected Hosts** | 172.22.117.20 |
 | **Remediation** | - Remove sensitive data from public repos<br>- Use stronger hashing algorithms like bcrypt or Argon2<br>- Enforce password complexity rules |
 
@@ -654,6 +668,7 @@ test:
 | **Type** | Web Application |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | The web service running on 172.22.117.20 required HTTP Basic Authentication. Using credentials found in Flag 1 (trivera:Tanya4life), login was successful. Inside the page, a file flag2.txt was discovered containing the flag. |
+| **Images** | ![image](https://github.com/user-attachments/assets/c50cb793-22fa-4f8e-b9aa-51b61a2e61a2) | 
 | **Affected Hosts** | 172.22.117.20 |
 | **Remediation** | - Avoid exposing HTTP services publicly unless absolutely necessary<br>- Use secure authentication methods (e.g., token-based or MFA)<br>- Remove sensitive files from web directories<br>- Log access attempts and monitor for credential abuse |
 
@@ -665,6 +680,8 @@ test:
 | **Type** | Linux OS |
 | **Risk Rating** | 🟠 **High** |
 | **Description** | The FTP server at 172.22.117.20 allowed anonymous logins without credentials. Attackers could list and download sensitive files like flag3.txt. |
+| **Images** | Input: <br> ![image](https://github.com/user-attachments/assets/c280a5a1-6aa5-46bb-b898-91617ddf16d9) | 
+| **Images** | Output: <br> ![image](https://github.com/user-attachments/assets/56bb067c-93ca-4786-8130-eebd36ecc68e) | 
 | **Affected Hosts** | 172.22.117.20 |
 | **Remediation** | - Disable anonymous FTP or restrict directories<br>- Use SFTP with authentication<br>- Monitor and alert on anonymous logins |
 
@@ -676,6 +693,8 @@ test:
 | **Type** | Linux OS |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | The POP3 service on 172.22.117.20 was running SLMail 3.03, known to be vulnerable to a buffer overflow. A Meterpreter shell was obtained. |
+| **Images** | Input: <br> ![image](https://github.com/user-attachments/assets/96f5a924-a2d2-4601-86a5-33a56c111cf4) | 
+| **Images** | Output: <br> ![image](https://github.com/user-attachments/assets/811b6ea8-3b3c-4e0e-bad5-25b7ae0b6159) | 
 | **Affected Hosts** | 172.22.117.20 |
 | **Remediation** | - Upgrade or remove vulnerable services<br>- Use segmentation to isolate exposed systems<br>- Employ IDS/IPS to monitor exploit attempts |
 
@@ -687,5 +706,7 @@ test:
 | **Type** | Linux OS |
 | **Risk Rating** | 🔴 **Critical** |
 | **Description** | While inside a compromised system via Meterpreter, scheduled tasks were queried revealing sensitive task information. |
+| **Images** | Input: <br> ![image](https://github.com/user-attachments/assets/f4671596-54eb-40ac-868c-b9b43bcb0b7f) | 
+| **Images** | Output: <br> ![image](https://github.com/user-attachments/assets/cfac8533-129b-4e3e-a907-2e0cf5bd5621) | 
 | **Affected Hosts** | 172.22.117.20 |
 | **Remediation** | - Limit user visibility of scheduled tasks<br>- Avoid embedding secrets in task names or descriptions<br>- Use system-level logging and task hardening |
