@@ -317,7 +317,7 @@ technical in these specifics. This should be an A--Z summary of your assessment.
 : XSS Reflected 
  
 In the "Welcome" page of the Rekall website, there is a text input field we can manipulate to have 
-specific outputs. I tested this by writing "<script>alert("ian waz here")</script>" into the input field: 
+specific outputs. I tested this by writing "<script>alert("i waz here")</script>" into the input field: 
 
 ![image](https://github.com/user-attachments/assets/3b35178f-ae37-4cf8-a691-d3234ddd1f2c)
 
