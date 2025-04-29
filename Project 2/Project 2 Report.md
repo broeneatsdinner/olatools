@@ -534,383 +534,156 @@ test:
 | **Affected Hosts** | 192.168.14.35 |
 | **Remediation** | - Implement output encoding (e.g., use `htmlspecialchars()` in PHP).<br>- Use a framework that provides built-in XSS protections.<br>- Implement a Content Security Policy (CSP) |
 
-Vulnerability 2  Findings 
-Title  Day 1 flag 2
+## Vulnerability 2
 
-: Reflected Cross-Site Scripting -- Memory-Planner Input 
-Type (Web app /  Web Application 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical  
-The first field in Memory-Planner.php is vulnerable to reflected XSS. The 
-Description 
-application attempts to block inputs by removing the string "script"; however, 
- 
-  
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 1 flag 2: Reflected Cross-Site Scripting – Memory-Planner Input |
+| **Type** | Web Application |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | The first field in Memory-Planner.php is vulnerable to reflected XSS. The application attempts to block inputs by removing the string "script"; however, attackers can bypass this by obfuscating the tag using split or mixed-case formatting. This allows JavaScript to execute in the browser. |
+| **Affected Hosts** | 192.168.14.35 |
+| **Remediation** | - Use a robust input sanitizer like DOMPurify or built-in framework sanitization<br>- Implement Content Security Policy (CSP) headers<br>- Do not reflect raw user input back into HTML pages |
 
+## Vulnerability 3
 
-attackers can bypass this by obfuscating the tag using split or mixed-case 
-formatting. This allows JavaScript to execute in the browser. 
-Input: 
- 
-Images 
-Output: 
- 
-Affected Hosts  192.168.14.35 
-- Use a robust input sanitizer like DOMPurify or built-in framework 
-sanitization 
-Remediation  
-- Implement Content Security Policy (CSP) headers 
-- Do not reflect raw user input back into HTML pages 
- 
- 
-Vulnerability 3  Findings 
-Title  Day 1 Flag 3
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 1 Flag 3: XSS Stored |
+| **Type** | Web Application |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | The comments.php page is vulnerable to stored XSS. When a user submits a comment containing JavaScript, the content is saved without proper sanitization and later rendered directly into the HTML of the page. This allows persistent client-side code execution in the context of any user viewing the page. |
+| **Affected Hosts** | 192.168.14.35 |
+| **Remediation** | - Sanitize and encode user input on both client and server sides.<br>- Do not render raw HTML from user input.<br>- Use a security-focused library like DOMPurify to filter unsafe content.<br>- Implement a strong Content Security Policy (CSP). |
 
-: XSS Stored 
-Type (Web app /  Web Application  
-Linux OS / 
-WIndows OS) 
- 
-  
+## Vulnerability 4
 
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 1 Flag 4: Sensitive data exposure |
+| **Type** | Web Application |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | The About-Rekall.php page returns an internal flag value (nckd97dk6sh2) in its HTTP response headers. This constitutes a sensitive data leak and could lead to information disclosure about internal variables, debugging flags, or backend logic. |
+| **Affected Hosts** | 192.168.14.35 |
+| **Remediation** | - Remove sensitive data from HTTP headers in production environments.<br>- Disable verbose or debug headers.<br>- Conduct regular manual and automated security audits to check for this type of information disclosure. |
 
-Risk Rating  Critical 
-The comments.php page is vulnerable to stored XSS. When a user submits a 
-comment containing JavaScript, the content is saved without proper 
-Description  sanitization and later rendered directly into the HTML of the page. This allows 
-persistent client-side code execution in the context of any user viewing the 
-page. 
-Input: 
- 
-Images 
-Output: 
- 
-Affected Hosts  192.168.14.35 
-- Sanitize and encode user input on both client and server sides. 
-- Do not render raw HTML from user input. 
-Remediation  
-- Use a security-focused library like DOMPurify to filter unsafe content. 
-- Implement a strong Content Security Policy (CSP). 
- 
- 
-Vulnerability 4  Findings 
-Title  Day 1 Flag 4
+## Vulnerability 5
 
-: Sensitive data exposure 
- 
-  
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 1 Flag 5: Local file inclusion |
+| **Type** | Web Application |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | The second field on Memory-Planner.php accepts file uploads but fails to enforce file type validation or content inspection. This allows attackers to upload and execute malicious PHP files. Sensitive files are stored in an accessible directory and executed by the server, leading to Local File Inclusion (LFI) and possible Remote Code Execution (RCE). |
+| **Affected Hosts** | 192.168.14.35 |
+| **Remediation** | - Restrict file types (e.g., only allow .jpg, .png, etc.)<br>- Validate file contents and MIME type<br>- Rename and store files outside the web root<br>- Disable execution permissions on uploaded file directories<br>- Consider using third-party libraries for secure upload handling |
 
+## Vulnerability 6
 
-Type (Web app /  Web Application 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical  
-The About-Rekall.php page returns an internal flag value 
-(nckd97dk6sh2) in its HTTP response headers.This constitutes a sensitive 
-Description 
-data leak and could lead to information disclosure about internal variables, 
-debugging flags, or backend logic. 
-Inspecting networking: 
- 
-Images 
-Potential unsecure information: 
- 
-Affected Hosts  192.168.14.35 
-- Remove sensitive data from HTTP headers in production 
-environments. 
-Remediation   ●  Disable verbose or debug headers. 
-- Conduct regular manual and automated security audits to check for 
-this type of information disclosure. 
- 
- 
- 
-  
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 2 flag 1: Open source exposed data |
+| **Type** | Web Application |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | Using publicly available WHOIS data, the flag was discovered in the “Registrant Street” field. This reveals potentially sensitive internal naming or identifiers that could be used for social engineering or passive recon. |
+| **Affected Hosts** | 76.223.105.230 |
+| **Remediation** | - Use privacy protection services or redacted WHOIS records for sensitive domain registrations. |
 
+## Vulnerability 7
 
-Vulnerability 5  Findings 
-Title  Day 1 Flag 5
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 2 Flag 2: Exposed IP Address |
+| **Type** | Linux OS |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | The IP address of the totalrekall.xyz domain can be easily resolved via ping or nslookup, revealing backend infrastructure and aiding in target scoping. |
+| **Affected Hosts** | 76.223.105.230 |
+| **Remediation** | - Use reverse proxies, CDNs, or cloud firewall services to hide origin IPs. |
 
-: Local file inclusion 
-Type (Web app /  Web Application  
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical 
-The second field on Memory-Planner.php accepts file uploads but fails to 
-enforce file type validation or content inspection. This allows attackers to 
-Description  upload and execute malicious PHP files. Sensitive files are stored in an 
-accessible directory and executed by the server, leading to Local File Inclusion 
-(LFI) and possible Remote Code Execution (RCE). 
-Images 
- 
-Affected Hosts  192.168.14.35 
-- Restrict file types (e.g., only allow .jpg, .png, etc.) 
-- Validate file contents and MIME type 
-Remediation   ●  Rename and store files outside the web root 
-- Disable execution permissions on uploaded file directories 
-- Consider using third-party libraries for secure upload handling 
- 
- 
-Vulnerability 6  Findings 
-Title  Day 2 flag 1
+## Vulnerability 8
 
-: Open source exposed data 
-Type (Web app /  Web Application 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical 
-Using publicly available WHOIS data, the flag was discovered in the 
-Description  "Registrant Street" field. This reveals potentially sensitive internal naming or 
-identifiers that could be used for social engineering or passive recon. 
- 
-  
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 2 Flag 3: Open-source exposed data |
+| **Type** | Web Application |
+| **Risk Rating** | 🔹 **Medium** |
+| **Description** | By searching public SSL certificate logs on crt.sh, a certificate was found issued for a subdomain: s7euwehd.totalrekall.xyz, which directly leaks the flag. |
+| **Affected Hosts** | 76.223.105.230 |
+| **Remediation** | - Avoid embedding sensitive tokens in subdomain names or certificates.<br>- Use environment-neutral identifiers. |
 
+## Vulnerability 9
 
-Images 
- 
-Affected Hosts  76.223.105.230 
-Use privacy protection services or redacted WHOIS records for sensitive 
-Remediation  
-domain registrations. 
- 
- 
-Vulnerability 7  Findings 
-Title  Day 2 Flag 2
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 2 Flag 4: Host Enumeration |
+| **Type** | Linux |
+| **Risk Rating** | 🔹 **Medium** |
+| **Description** | An nmap ping sweep across the 192.168.13.0/24 subnet identified 6 total hosts, including the attacker's. |
+| **Affected Hosts** | 192.168.13.10, 192.168.13.11, 192.168.13.12, 192.168.13.13, 192.168.13.14 |
+| **Remediation** | - Implement firewalls or intrusion prevention systems to detect/limit ICMP-based enumeration. |
 
-: Exposed IP Address 
-Type (Web app /  Linux OS 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical  
-The IP address of the totalrekall.xyz domain can be easily resolved via 
-Description  ping or nslookup, revealing backend infrastructure and aiding in target 
-scoping. 
-Images 
- 
- 
-  
+## Vulnerability 10
 
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 2 Flag 5: nmap |
+| **Type** | Linux OS |
+| **Risk Rating** | 🟠 **High** |
+| **Description** | An aggressive Nmap scan revealed that the host 192.168.13.13 is running Drupal, specifically version 8. This is vulnerable to known exploits and should be hardened or removed. |
+| **Affected Hosts** | 192.168.13.13 |
+| **Remediation** | - Restrict public access<br>- Patch the CMS<br>- Disable default files like INSTALL.txt or README.txt. |
 
-Affected Hosts  76.223.105.230 
-Remediation   Use reverse proxies, CDNs, or cloud firewall services to hide origin IPs. 
- 
- 
-Vulnerability 8  Findings 
-Title  Day 2 Flag 3
+## Vulnerability 11
 
-: Open-source exposed data 
-Type (Web app /  Web Application 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Medium 
-By searching public SSL certificate logs on crt.sh, a certificate was found 
-Description  issued for a subdomain: 
-s7euwehd.totalrekall.xyz, which directly leaks the flag. 
-Images 
- 
-Affected Hosts  76.223.105.230 
-Avoid embedding sensitive tokens in subdomain names or certificates. Use 
-Remediation  
-environment-neutral identifiers. 
- 
- 
-Vulnerability 9  Findings 
-Title  Day 2 Flag 4
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 3 Flag 1: OSINT |
+| **Type** | Web Application/Linux OS |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | Credentials were found in a public GitHub repository (xampp.userspage) associated with totalrekall.xyz. One of the exposed user hashes was in Apache $apr1$ (MD5-based) format. Using john and a wordlist, the hash was successfully cracked. |
+| **Affected Hosts** | 172.22.117.20 |
+| **Remediation** | - Remove sensitive data from public repos<br>- Use stronger hashing algorithms like bcrypt or Argon2<br>- Enforce password complexity rules |
 
-: Host Enumeration 
-Type (Web app /  Linux 
-Linux OS / 
-WIndows OS) 
-Risk Rating  medium 
-An nmap ping sweep across the 192.168.13.0/24 subnet identified 6 total 
-Description 
-hosts, including the attacker's.  
- 
-  
+## Vulnerability 12
 
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 3 Flag 2: Http Enumeration |
+| **Type** | Web Application |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | The web service running on 172.22.117.20 required HTTP Basic Authentication. Using credentials found in Flag 1 (trivera:Tanya4life), login was successful. Inside the page, a file flag2.txt was discovered containing the flag. |
+| **Affected Hosts** | 172.22.117.20 |
+| **Remediation** | - Avoid exposing HTTP services publicly unless absolutely necessary<br>- Use secure authentication methods (e.g., token-based or MFA)<br>- Remove sensitive files from web directories<br>- Log access attempts and monitor for credential abuse |
 
-Images 
- 
-192.168.13.10 
-192.168.13.11 
-Affected Hosts  192.168.13.12 
-192.168.13.13 
-192.168.13.14 
-Implement firewalls or intrusion prevention systems to detect/limit ICMP-based 
-Remediation  
-enumeration. 
- 
- 
-Vulnerability 10  Findings 
-Title  Day 2 Flag 5
+## Vulnerability 13
 
-: nmap 
-Type (Web app /  Linux OS  
-Linux OS / 
-WIndows OS) 
-Risk Rating  High 
-An aggressive Nmap scan revealed that the host 192.168.13.13 is running 
-Description  Drupal, specifically version 8. This is vulnerable to known exploits and should 
-be hardened or removed. 
- 
-  
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 3 Flag 3: FTP Enumeration |
+| **Type** | Linux OS |
+| **Risk Rating** | 🟠 **High** |
+| **Description** | The FTP server at 172.22.117.20 allowed anonymous logins without credentials. Attackers could list and download sensitive files like flag3.txt. |
+| **Affected Hosts** | 172.22.117.20 |
+| **Remediation** | - Disable anonymous FTP or restrict directories<br>- Use SFTP with authentication<br>- Monitor and alert on anonymous logins |
 
+## Vulnerability 14
 
-Images 
- 
-Affected Hosts  192.168.13.13 
-Restrict public access, patch the CMS, and disable default files like 
-Remediation  
-INSTALL.txt or README.txt. 
- 
- 
-Vulnerability 11  Findings 
-Day 3 Flag 1
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 3 Flag 4: Metasploit |
+| **Type** | Linux OS |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | The POP3 service on 172.22.117.20 was running SLMail 3.03, known to be vulnerable to a buffer overflow. A Meterpreter shell was obtained. |
+| **Affected Hosts** | 172.22.117.20 |
+| **Remediation** | - Upgrade or remove vulnerable services<br>- Use segmentation to isolate exposed systems<br>- Employ IDS/IPS to monitor exploit attempts |
 
-: OSINT 
-Title 
- 
-Type (Web app /  Web Application/Linux OS 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical 
-Credentials were found in a public GitHub repository (xampp.userspage) 
-associated with totalrekall.xyz. One of the exposed user hashes was in 
-Description  Apache $apr1$ (MD5-based) format. Using john and a wordlist, the hash 
-was successfully cracked. 
- 
-  
+## Vulnerability 15
 
-
- 
-Images 
- 
-Affected Hosts  172.22.117.20 
-- Remove sensitive data from public repos 
-- Use stronger hashing algorithms like bcrypt or Argon2 
-Remediation  
-- Enforce password complexity rules 
- 
- 
- 
-  
-
-
-Vulnerability 12  Findings 
-Title  Day 3 Flag 2
-
-: Http Enumeration  
-Type (Web app /  Web Application 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical 
-The web service running on 172.22.117.20 required HTTP Basic 
-Authentication. Using credentials found in Flag 1 (trivera:Tanya4life), 
-Description 
-login was successful. Inside the page, a file flag2.txt was discovered 
-containing the flag. 
-Images 
- 
-Affected Hosts  172.22.117.20 
-- Avoid exposing HTTP services publicly unless absolutely necessary 
-- Use secure authentication methods (e.g., token-based or MFA) 
-Remediation  
-- Remove sensitive files from web directories 
-- Log access attempts and monitor for credential abuse 
- 
- 
-Vulnerability 13  Findings 
-Title  Day 3 Flag 3
-
-: FTP Enumeration 
-Type (Web app /  Linux OS 
-Linux OS / 
-WIndows OS) 
-Risk Rating  High 
-The FTP server at 172.22.117.20 allowed anonymous logins without 
-Description  credentials. Once inside, the attacker was able to list files and download 
-flag3.txt, which contained the flag. 
- 
-  
-
-
- 
-Images 
- 
-Affected Hosts  172.22.117.20 
-- Disable anonymous FTP or restrict directories 
-- Use SFTP with authentication 
-Remediation  
-- Monitor and alert on anonymous logins 
- 
- 
-Vulnerability 14  Findings 
-Title  Day 3 Flag 4
-
-: Metasploit 
-Type (Web app /  Linux OS 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical 
-The POP3 service on 172.22.117.20 was running SLMail 3.03, known to be 
-Description  vulnerable to a buffer overflow. Using Metasploit, a Meterpreter shell was 
-obtained. Navigating through the system revealed flag4.txt, containing the 
- 
-  
-
-
-flag. 
- 
-Images 
- 
-Affected Hosts  172.22.117.20 
-- Upgrade or remove vulnerable services 
-Remediation   ●  Use segmentation to isolate exposed systems 
-- Employ IDS/IPS to monitor exploit attempts 
- 
- 
-Vulnerability 15  Findings 
-Title  Day 3 Flag 5
-
-: Common Tasks 
-Type (Web app /  Linux OS 
-Linux OS / 
-WIndows OS) 
-Risk Rating  Critical 
-While inside a compromised system via Meterpreter, scheduled tasks were 
-Description 
-queried using schtasks. A task named flag5 was found, and the details 
- 
-  
-
-
-contained the flag. This reveals how unprotected or overly descriptive 
-scheduled tasks can leak data. 
- 
-Images 
- 
-Affected Hosts  172.22.117.20 
-- Limit user visibility of scheduled tasks 
-Remediation   ●  Avoid embedding secrets in task names or descriptions 
-- Use system-level logging and task hardening 
- 
- 
-Vulnerability   Findings 
-Title   
-Type (Web app /   
-Linux OS / 
-WIndows OS) 
-Risk Rating   
-Description   
- 
-  
-
-
-Images   
-Affected Hosts   
-Remediation    
- 
- 
-Add any additional vulnerabilities below. 
- 
-  
+| **Field** | **Details** |
+| :--- | :--- |
+| **Title** | Day 3 Flag 5: Common Tasks |
+| **Type** | Linux OS |
+| **Risk Rating** | 🔴 **Critical** |
+| **Description** | While inside a compromised system via Meterpreter, scheduled tasks were queried revealing sensitive task information. |
+| **Affected Hosts** | 172.22.117.20 |
+| **Remediation** | - Limit user visibility of scheduled tasks<br>- Avoid embedding secrets in task names or descriptions<br>- Use system-level logging and task hardening |
