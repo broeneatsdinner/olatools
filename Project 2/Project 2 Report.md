@@ -1,8 +1,14 @@
 ![image](https://github.com/user-attachments/assets/717e8f39-746d-4485-835a-44e89a2085bc)
 
-Rekall Corporation  
-Penetration Test Report  
- 
+<div id="user-content-toc">
+  <ul align="left" style="list-style: none;">
+    <summary>
+      <h1>Rekall Corporation<br><br></h1>
+      <h2>Penetration Test Report</h2>
+    </summary>
+  </ul>
+</div>
+
 # Confidentiality Statement
  
 This document contains confidential and privileged information from Rekall Inc. (henceforth known 
@@ -14,24 +20,24 @@ its parts is prohibited.
 
 # Table of Contents
  
-# Confidentiality Statement  2 
-# Contact Information  4 
-# Document History  4 
-# Introduction  5 
-# Assessment Objective  5 
-# Penetration Testing Methodology  6 
-Reconnaissance  6 
-Identification of Vulnerabilities and Services  6 
-Vulnerability Exploitation  6 
-Reporting  6 
-# Scope  7 
-# Executive Summary of Findings  8 
-## Grading Methodology  8 
-## Summary of Strengths  9 
-## Summary of Weaknesses  9 
-# Executive Summary Narrative  10 
-# Summary Vulnerability Overview  13 
-# Vulnerability Findings  14 
+- Confidentiality Statement  2 
+- Contact Information  4 
+- Document History  4 
+- Introduction  5 
+- Assessment Objective  5 
+- Penetration Testing Methodology  6 
+- Reconnaissance  6 
+- Identification of Vulnerabilities and Services  6 
+- Vulnerability Exploitation  6 
+- Reporting  6 
+- Scope  7 
+- Executive Summary of Findings  8 
+- Grading Methodology  8 
+- Summary of Strengths  9 
+- Summary of Weaknesses  9 
+- Executive Summary Narrative  10 
+- Summary Vulnerability Overview  13 
+- Vulnerability Findings  14 
 
 ## Contact Information
 
