@@ -522,8 +522,10 @@ test:
 | 🟢 **Low** | 0 | 
  
 # Vulnerability Findings
+
+## Vulnerability 1
  
-| **Vulnerability 1** | **Findings** |
+| **Field** | **Details** |
 | :--- | :--- |
 | **Title** | Day 1 Flag 1: XSS Reflected |
 | **Type (Web app / Linux OS / Windows OS)** | Web Application |
