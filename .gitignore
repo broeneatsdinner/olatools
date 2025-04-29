@@ -29,6 +29,10 @@
 !Project 1/scripts/
 !Project 1/scripts/**
 
+# Allow the Project 2/ directory and contents
+!Project 2/
+!Project 2/*
+
 # Ignore macOS system files
 # (Redundant, but kept here for clarity and explicit rule)
 .DS_Store
