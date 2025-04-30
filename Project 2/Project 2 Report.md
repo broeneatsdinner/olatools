@@ -166,13 +166,8 @@ Informational:    No threat; however, it is data that may be used in a future at
  
 As the following grid shows, each threat is assessed in terms of both its potential impact on the 
 business and the likelihood of exploitation: 
- 
- 
- 
- 
- 
-  
 
+![image_13](https://github.com/user-attachments/assets/65dcbf6c-3c02-4873-aabf-44a2bd396a44)
 
 ## Summary of Strengths
  
