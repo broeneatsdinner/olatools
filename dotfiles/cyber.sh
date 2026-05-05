@@ -3,6 +3,8 @@
 # --    cyber    --
 # -----------------
 
+# description: Connect to a target IP with configured Cyber credentials and deploy a remote bashrc payload.
+
 # Set strict error handling
 set -euo pipefail
 
